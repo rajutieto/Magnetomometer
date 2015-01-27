@@ -504,6 +504,15 @@ typedef uint32_t  u32;
 typedef uint16_t u16;
 typedef uint8_t  u8;
 
+typedef uint32_t uint32;
+typedef uint16_t uint16;
+typedef uint8_t  uint8;
+
+typedef uint32_t U32_T;
+typedef uint16_t U16_T;
+typedef uint8_t  U8_T;
+
+
 typedef const uint32_t uc32;  /*!< Read Only */
 typedef const uint16_t uc16;  /*!< Read Only */
 typedef const uint8_t uc8;   /*!< Read Only */

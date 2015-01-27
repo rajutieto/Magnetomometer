@@ -4,12 +4,31 @@
 #include <stdio.h>
 #include "stm32f10x.h"
 #include "led.h"
+#include "RM3100.h"
 
-u8 tcp_server_databuf[500];   	//发送数据缓存	  
+u8 send_flag = 0; 
+u16 uart_buf_len;
+u8 tcp_buf_ready;
+
+u8   mac_address[6];//registers: 100 101 102 103 104 105
+u8   ip_mode = 0;//register: 106, 0 = static, 1 = DHCP
+u8   ip_address[4] = {192, 168, 0, 3};//registers: 107 108 109 110
+u8   subnet_mask_address[4] = {255, 255, 255, 0};//registers: 111 112 113 114
+u8   gateway_address[4] = {192, 168, 0, 4};//registers: 115 116 117 118
+u8   tcp_server_enable = 0;//registers 119
+u8   listen_port_at_tcp_server_mode[2] = {0x17, 0x71};//register 120 121
+
+u8   ip_mode_ghost = 0;//register: 106, 0 = static, 1 = DHCP
+u8   ip_address_ghost[4] = {0, 0, 0, 0};//registers: 107 108 109 110
+u8   subnet_mask_address_ghost[4] = {0, 0, 0, 0};//registers: 111 112 113 114
+u8   gateway_address_ghost[4] = {0, 0, 0, 0};//registers: 115 116 117 118
+u8   tcp_server_enable_ghost = 0;//registers 119
+u8   listen_port_at_tcp_server_mode_ghost[2] = {0, 0};//register 120 121
+u8   enable_ghost = 0;
+
+u8 tcp_server_databuf[1024];   	//发送数据缓存	  
+u16 tcp_buf_len;
 u8 tcp_server_sta;				//服务端状态
-//[7]:0,无连接;1,已经连接;
-//[6]:0,无数据;1,收到客户端数据
-//[5]:0,无数据;1,有数据需要发送
 
  	   
 //这是一个TCP 服务器应用回调函数。
@@ -18,7 +37,8 @@ u8 tcp_server_sta;				//服务端状态
 //例如 : 当一个TCP连接被创建时、有新的数据到达、数据已经被应答、数据需要重发等事件
 void tcp_server_demo_appcall(void)
 {
- 	struct tcp_demo_appstate *s = (struct tcp_demo_appstate *)&uip_conn->appstate;
+ 	u16 temp;
+	struct tcp_demo_appstate *s = (struct tcp_demo_appstate *)&uip_conn->appstate;
 	if(uip_aborted())tcp_server_aborted();		//连接终止
  	if(uip_timedout())tcp_server_timedout();	//连接超时   
 	if(uip_closed())tcp_server_closed();		//连接关闭	   
@@ -27,27 +47,64 @@ void tcp_server_demo_appcall(void)
 	//接收到一个新的TCP数据包 
 	if(uip_newdata())//收到客户端发过来的数据
 	{
-		if((tcp_server_sta & (1 << 6)) == 0)	//还未收到数据
-		{
-			if(uip_len > 499)
-			{		   
-				((u8*)uip_appdata)[499] = 0;
-			}
-		    
-	    	strcpy((char*)tcp_server_databuf, uip_appdata);				   	  		  
-			tcp_server_sta |= 1 << 6;			//表示收到客户端数据
-		}
+//		if((tcp_server_sta & (1 << 6)) == 0)	//还未收到数据
+//		{
+//			if(uip_len > 499)
+//			{		   
+//				((u8*)uip_appdata)[499] = 0;
+//			}
+//		    
+//	    	strcpy((char*)tcp_server_databuf, uip_appdata);				   	  		  
+//			tcp_server_sta |= 1 << 6;			//表示收到客户端数据
+//		}
+		if(strcmp(uip_appdata,"send") == 0)
+			{
+				send_flag =1;
+			} 
 	}
-	else if(tcp_server_sta & (1 << 5))			//有数据需要发送
-	{
-		s->textptr = tcp_server_databuf;
-		s->textlen = strlen((const char*)tcp_server_databuf);
-		tcp_server_sta &= ~(1 << 5);			//清除标记
-	}
+//	else if(tcp_server_sta & (1 << 5))			//有数据需要发送
+//	{
+//		s->textptr = tcp_server_databuf;
+//		s->textlen = strlen((const char*)tcp_server_databuf);
+//		tcp_server_sta &= ~(1 << 5);			//清除标记
+//	}
 	
 	//当需要重发、新数据到达、数据包送达、连接建立时，通知uip发送数据 
 	if(uip_rexmit() || uip_newdata() || uip_acked() || uip_connected() || uip_poll())
 	{
+		if(send_flag == 1)
+		{
+			if(tcp_buf_ready == 1)
+			{	
+				if(uart_buf_len > BUF_LEN)
+				{	
+					temp = BUF_LEN;
+				}
+				else
+					temp = uart_buf_len;
+				
+				tcp_buf_len = temp*PRINT_BUF_SIZE; 
+				memcpy(tcp_server_databuf,(u8*)tcp_buf,tcp_buf_len);	
+				
+				uart_buf_len -=temp;
+				if(uart_buf_len == 0)
+				{
+					tcp_buf_ready =0;
+					send_flag = 0;
+				}
+				memcpy(tcp_buf,&tcp_buf[temp],uart_buf_len*PRINT_BUF_SIZE);
+				
+				s->textptr = tcp_server_databuf;
+				s->textlen =tcp_buf_len;//strlen((const char*)tcp_server_databuf);
+			}
+			else
+			{
+				//memcpy(tcp_server_databuf,"over",4);
+				s->textptr = tcp_server_databuf;
+				s->textlen =0;//strlen((const char*)tcp_server_databuf);
+				send_flag = 0;
+			}
+		}
 		tcp_server_senddata();
 	}
 }

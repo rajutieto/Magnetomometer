@@ -31,7 +31,7 @@
 #include "modbus.h"
 #include "../menu/menu.h"
 #include "rm3100.h"
-
+#include "tcp_demo.h"
 //u8 opto_refresh = 1;
 u8 test_finished_flag = FALSE; 
 u16 OVER_REC_TIMER = START_REC_TIMER;
@@ -46,8 +46,10 @@ static void vUSBTask( void *pvParameters );
 static void vUARTTask(void *pvParameters);
 static void vUART2Task(void *pvParameters);
 static void vSDTask( void *pvParameters );
-//void uip_polling(void);
-//#define BUF ((struct uip_eth_hdr *)&uip_buf[0])	
+static void vNETTask( void *pvParameters );
+void uip_polling(void);
+#define BUF ((struct uip_eth_hdr *)&uip_buf[0])	
+	 
 
 
 u8 Threshold = 5;
@@ -71,15 +73,13 @@ int main(void)
 	KEY_Init();
 	AT24CXX_Init();
 //	Lcd_Initial();
-//	SPI1_Init();
+	SPI1_Init();
 	SPI2_Init();
 	mem_init(SRAMIN);
 	exfuns_init();
 	modbus_init();
 	TIM3_Int_Init(100, 7199);//20ms
-	
-//	TIM4_Int_Init();
-//	TIM6_Int_Init(100, 7199);
+	 
 	
 	delay_ms(2000);
 	
@@ -92,7 +92,8 @@ int main(void)
 	
 	xTaskCreate( vSDTask, ( signed portCHAR * ) "SD", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 7, NULL );
 	xTaskCreate( vLED0Task, ( signed portCHAR * ) "LED0", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 1, NULL );
- 	
+	xTaskCreate( vNETTask, ( signed portCHAR * ) "NET", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 1, NULL );
+	
  	vStartMenuTask(tskIDLE_PRIORITY + 2);
 	/* Start the scheduler. */
 	
@@ -144,82 +145,13 @@ void vUART2Task(void *pvParameters)
 }
 void vLED0Task( void *pvParameters )
 {
-	u16 temp,i;
-	delay_ms(1000);
-//	Lcd_Show_String(0, 0, DISP_NOR, "X1:        X2:       ");
-//	Lcd_Show_String(1, 0, DISP_NOR, "Y1:        Y2:       ");
-//	Lcd_Show_String(2, 0, DISP_NOR, "Z1:        Z2:       "); 
-//	Lcd_Show_String(3, 0, DISP_NOR, "LEFT:                 "); 
-//	Lcd_Show_String(4, 0, DISP_NOR, "RIGHT:                ");
+//	u16 temp,i;
+	delay_ms(1000); 
 	for( ;; )
-	{ 
-		
-			
-		 
-			if((rm3100[0].result)||(rm3100[1].result)) 
-				LED0 = ~LED0; 				
-			 
-				 
-			
-			
-//			sprintf(text, "%5d",  run_times);
-//			if(opto_capture == TRUE)
-//			{ 
-//				Lcd_Show_String(3, 15, DISP_NOR, text);	
-//			}
-//			else
-//			{ 	
-//				Lcd_Show_String(4, 15, DISP_NOR, text);	
-//			}
- 			
-	 
-//			if(rec_timer == REC_TIMER_TOTAL)
-//				temp = rec_timer;
-//			else
-//				temp =  rec_timer-1;
-//			display.x1 = print_buf[temp].RM3100_0[X_AXIS];
-//			display.x2 = print_buf[temp].RM3100_1[X_AXIS];
-//			display.y1 = print_buf[temp].RM3100_0[Y_AXIS];
-//			display.y2 = print_buf[temp].RM3100_1[Y_AXIS];
-//			display.z1 = print_buf[temp].RM3100_0[Z_AXIS];
-//			display.z2 = print_buf[temp].RM3100_1[Z_AXIS];  
-//			display.left_result  = rm3100[0].result;
-//			display.right_result = rm3100[1].result;
-//			display.triggle_number = rm3100[0].triggle_number;
- 
-//			sprintf(text, "%7d",  print_buf[temp].RM3100_0[X_AXIS]);
-//			Lcd_Show_String(0, 3, DISP_NOR, text);
-//			sprintf(text, "%7d",  print_buf[temp].RM3100_1[X_AXIS]);
-//			Lcd_Show_String(0, 14, DISP_NOR, text); 
-//			sprintf(text, "%7d",  print_buf[temp].RM3100_0[Y_AXIS]);
-//			Lcd_Show_String(1, 3, DISP_NOR, text);
-//			sprintf(text, "%7d",  print_buf[temp].RM3100_1[Y_AXIS]);
-//			Lcd_Show_String(1, 14, DISP_NOR, text); 
-//			sprintf(text, "%7d",  print_buf[temp].RM3100_0[Z_AXIS]);
-//			Lcd_Show_String(2, 3, DISP_NOR, text);
-//			sprintf(text, "%7d",  print_buf[temp].RM3100_1[Z_AXIS]);
-//			Lcd_Show_String(2, 14, DISP_NOR, text);
- 
-		 
-//		if(test_finished_flag==TRUE)
-//		{
-//			/*
-//			mf_open("0:/labatts.txt", FA_READ | FA_WRITE | FA_OPEN_ALWAYS);
-//			mf_lseek(mf_size()); 
-//			for(i=0;i<rec_timer;i++)
-//			{
-//					
-//					sprintf((char *)text, "timer = %8d,opto = %8d,fgm1 = %8d,fgm2 = %8d, X1 = %8d, Y1 = %8d, Z1 = %8d,X2 = %8d, Y2 = %8d, Z2 = %8d\r\n",i,print_buf[i].opto_status,print_buf[i].FGM_1,print_buf[i].FGM_2, print_buf[i].RM3100_0[X_AXIS],print_buf[i].RM3100_0[Y_AXIS], print_buf[i].RM3100_0[Z_AXIS],print_buf[i].RM3100_1[X_AXIS],print_buf[i].RM3100_1[Y_AXIS], print_buf[i].RM3100_1[Z_AXIS]);
-//					mf_puts(text);
-//			}  			
-//			sprintf((char *)text, "Total_Timer = %8d,Triggle_number = %8d,sensor1_result = %8d,sensor2_result = %8d\r\n",rm3100[0].data_number,rm3100[0].triggle_number,rm3100[0].result,rm3100[1].result); 
-//			mf_puts(text);
-//			mf_close();
-//			*/
-//			 		
-//			test_finished_flag=FALSE; 
-//			rec_timer = 0; 	 		 		 
-//		}
+	{  
+		if((rm3100[0].result)||(rm3100[1].result)) 
+			LED0 = ~LED0; 				
+			  
 		delay_ms(300); 
 	}
 }
@@ -236,17 +168,66 @@ void vUSBTask( void *pvParameters )
 		;		
 	}
 }
+
+void test()
+{
+	print_buf[0].RM3100_0[X_AXIS] = 1;
+	print_buf[0].RM3100_0[Y_AXIS] = 2;
+	print_buf[0].RM3100_0[Z_AXIS] = 3;
+	print_buf[0].RM3100_1[X_AXIS] = 4;
+	print_buf[0].RM3100_1[Y_AXIS] = 5;
+	print_buf[0].RM3100_1[Z_AXIS] = 6;
+	print_buf[0].opto_status = 13;
+	print_buf[1].RM3100_0[X_AXIS] = 7;
+	print_buf[1].RM3100_0[Y_AXIS] = 8;
+	print_buf[1].RM3100_0[Z_AXIS] = 9;
+	print_buf[1].RM3100_1[X_AXIS] = 10;
+	print_buf[1].RM3100_1[Y_AXIS] = 11;
+	print_buf[1].RM3100_1[Z_AXIS] = 12; 
+	print_buf[1].opto_status = 14;
+	print_buf[40].RM3100_0[Y_AXIS] = 22;
+	print_buf[40].RM3100_0[Z_AXIS] = 23;
+	print_buf[40].RM3100_1[X_AXIS] = 24;
+	print_buf[40].RM3100_1[Y_AXIS] = 25;
+	print_buf[40].RM3100_1[Z_AXIS] = 26;
+	print_buf[40].opto_status = 13;
+	print_buf[41].RM3100_0[X_AXIS] = 27;
+	print_buf[41].RM3100_0[Y_AXIS] = 28;
+	print_buf[41].RM3100_0[Z_AXIS] = 29;
+	print_buf[41].RM3100_1[X_AXIS] = 30;
+	print_buf[41].RM3100_1[Y_AXIS] = 31;
+	print_buf[41].RM3100_1[Z_AXIS] = 32; 
+	print_buf[41].opto_status = 14; 	
+	uart_buf_len = 41;
+}
 void vSDTask( void *pvParameters )
 {
      u16  i;
+//	u8  led_record = 0;
 	delay_ms(1000);
 
+	mf_mount(0);
+ 
 	for( ;; )
 	{
-			 
+//		if(led_record>= 80)
+//		{
+//			LED0 = ~LED0;
+//			led_record = 0;
+//		}
+//		else
+//			led_record++;	 
+		
 		if(test_finished_flag==TRUE)
 		{
- 		    rm3100_detect(); 
+ 		   // memcpy(tcp_buf,print_buf,rec_timer*PRINT_BUF_SIZE); 
+			tcp_buf_ready = 1;
+//			rec_timer = 100;
+			uart_buf_len = rec_timer;
+//			test();
+ 			memcpy(tcp_buf,print_buf,rec_timer*PRINT_BUF_SIZE); 
+			
+ 			rm3100_detect(); 
 			
 			mf_open("0:/labatts.txt", FA_READ | FA_WRITE | FA_OPEN_ALWAYS);
 			mf_lseek(mf_size()); 
@@ -271,12 +252,12 @@ void vSDTask( void *pvParameters )
 			
 			mf_close();
  			 
-					
-			test_finished_flag=FALSE; 
+			test_finished_flag=FALSE;
+				
 			rec_timer = 0; 	 		 		 
 		}
 		delay_ms(5);			
-	}
+	} 
 }
 
 //u8 myMAC[] = {0x00, 0x0e, 0x00, 0x25, 0x36, 0x64}; 
@@ -289,7 +270,7 @@ void vCOMMTask( void *pvParameters )
 	BL_ON(); 
 	
 	
-	mf_mount(0);
+//	mf_mount(0);
 	
     		    //尝试连接到TCP Server端,用于TCP Client
 	rm3100_initial();
@@ -434,83 +415,112 @@ void vKEYTask( void *pvParameters )
 
 //uip事件处理函数
 //必须将该函数插入用户主循环,循环调用.
-//void uip_polling(void)
-//{
-//	u8 i;
-//	static struct timer periodic_timer, arp_timer;
-//	static u8 timer_ok = 0;	 
-//	if(timer_ok == 0)		//仅初始化一次
-//	{
-//		timer_ok = 1;
-//		timer_set(&periodic_timer, CLOCK_SECOND / 2); 	//创建1个0.5秒的定时器 
-//		timer_set(&arp_timer, CLOCK_SECOND * 10);	   	//创建1个10秒的定时器 
-//	}
-//	
-//	uip_len = tapdev_read();							//从网络设备读取一个IP包,得到数据长度.uip_len在uip.c中定义
-//	if(uip_len > 0)							 			//有数据
-//	{   
-//		//处理IP数据包(只有校验通过的IP包才会被接收) 
-//		if(BUF->type == htons(UIP_ETHTYPE_IP))			//是否是IP包? 
-//		{
-//			uip_arp_ipin();								//去除以太网头结构，更新ARP表
-//			uip_input();   								//IP包处理
-//			
-//			//当上面的函数执行后，如果需要发送数据，则全局变量 uip_len > 0
-//			//需要发送的数据在uip_buf, 长度是uip_len  (这是2个全局变量)		    
-//			if(uip_len > 0)								//需要回应数据
-//			{
-//				uip_arp_out();							//加以太网头结构，在主动连接时可能要构造ARP请求
-//				tapdev_send();							//发送数据到以太网
-//			}
-//		}
-//		else if (BUF->type == htons(UIP_ETHTYPE_ARP))	//处理arp报文,是否是ARP请求包?
-//		{
-//			uip_arp_arpin();
-//			
-// 			//当上面的函数执行后，如果需要发送数据，则全局变量uip_len>0
-//			//需要发送的数据在uip_buf, 长度是uip_len(这是2个全局变量)
-// 			if(uip_len > 0)
-//				tapdev_send();							//需要发送数据,则通过tapdev_send发送	 
-//		}
-//	}
-//	else if(timer_expired(&periodic_timer))				//0.5秒定时器超时
-//	{
-//		timer_reset(&periodic_timer);					//复位0.5秒定时器 
-//		
-//		//轮流处理每个TCP连接, UIP_CONNS缺省是40个  
-//		for(i = 0; i < UIP_CONNS; i++)
-//		{
-//			uip_periodic(i);							//处理TCP通信事件
-//			
-//	 		//当上面的函数执行后，如果需要发送数据，则全局变量uip_len>0
-//			//需要发送的数据在uip_buf, 长度是uip_len (这是2个全局变量)
-//	 		if(uip_len > 0)
-//			{
-//				uip_arp_out();							//加以太网头结构，在主动连接时可能要构造ARP请求
-//				tapdev_send();							//发送数据到以太网
-//			}
-//		}
-//		
-//#if UIP_UDP	//UIP_UDP 
-//		//轮流处理每个UDP连接, UIP_UDP_CONNS缺省是10个
-//		for(i = 0; i < UIP_UDP_CONNS; i++)
-//		{
-//			uip_udp_periodic(i);						//处理UDP通信事件
-//			
-//	 		//当上面的函数执行后，如果需要发送数据，则全局变量uip_len>0
-//			//需要发送的数据在uip_buf, 长度是uip_len (这是2个全局变量)
-//			if(uip_len > 0)
-//			{
-//				uip_arp_out();							//加以太网头结构，在主动连接时可能要构造ARP请求
-//				tapdev_send();							//发送数据到以太网
-//			}
-//		}
-//#endif 
-//		//每隔10秒调用1次ARP定时器函数 用于定期ARP处理,ARP表10秒更新一次，旧的条目会被抛弃
-//		if(timer_expired(&arp_timer))
-//		{
-//			timer_reset(&arp_timer);
-//			uip_arp_timer();
-//		}
-//	}
-//}
+void uip_polling(void)
+{
+	u8 i; 
+	static struct timer periodic_timer, arp_timer;
+	static u8 timer_ok = 0;	 
+	 
+	if(timer_ok == 0)		//仅初始化一次
+	{
+		timer_ok = 1;
+		timer_set(&periodic_timer, CLOCK_SECOND / 2); 	//创建1个0.5秒的定时器 
+		timer_set(&arp_timer, CLOCK_SECOND * 10);	   	//创建1个10秒的定时器 
+	}
+	
+	uip_len = tapdev_read();							//从网络设备读取一个IP包,得到数据长度.uip_len在uip.c中定义
+	if(uip_len > 0)							 			//有数据
+	{   
+		//处理IP数据包(只有校验通过的IP包才会被接收) 
+		if(BUF->type == htons(UIP_ETHTYPE_IP))			//是否是IP包? 
+		{
+			uip_arp_ipin();								//去除以太网头结构，更新ARP表
+			uip_input();   								//IP包处理
+			
+			//当上面的函数执行后，如果需要发送数据，则全局变量 uip_len > 0
+			//需要发送的数据在uip_buf, 长度是uip_len  (这是2个全局变量)		    
+			if(uip_len > 0)								//需要回应数据
+			{
+				uip_arp_out();							//加以太网头结构，在主动连接时可能要构造ARP请求
+				tapdev_send();							//发送数据到以太网
+			}
+		}
+		else if (BUF->type == htons(UIP_ETHTYPE_ARP))	//处理arp报文,是否是ARP请求包?
+		{
+			uip_arp_arpin();
+			
+ 			//当上面的函数执行后，如果需要发送数据，则全局变量uip_len>0
+			//需要发送的数据在uip_buf, 长度是uip_len(这是2个全局变量)
+ 			if(uip_len > 0)
+				tapdev_send();							//需要发送数据,则通过tapdev_send发送	 
+		}
+	}
+	else if(timer_expired(&periodic_timer))				//0.5秒定时器超时
+	{
+		timer_reset(&periodic_timer);					//复位0.5秒定时器 
+		
+		//轮流处理每个TCP连接, UIP_CONNS缺省是40个  
+		for(i = 0; i < UIP_CONNS; i++)
+		{
+			uip_periodic(i);							//处理TCP通信事件
+			
+	 		//当上面的函数执行后，如果需要发送数据，则全局变量uip_len>0
+			//需要发送的数据在uip_buf, 长度是uip_len (这是2个全局变量)
+	 		if(uip_len > 0)
+			{
+				uip_arp_out();							//加以太网头结构，在主动连接时可能要构造ARP请求
+				tapdev_send();							//发送数据到以太网
+			}
+		}
+		
+#if UIP_UDP	//UIP_UDP 
+		//轮流处理每个UDP连接, UIP_UDP_CONNS缺省是10个
+		for(i = 0; i < UIP_UDP_CONNS; i++)
+		{
+			uip_udp_periodic(i);						//处理UDP通信事件
+			
+	 		//当上面的函数执行后，如果需要发送数据，则全局变量uip_len>0
+			//需要发送的数据在uip_buf, 长度是uip_len (这是2个全局变量)
+			if(uip_len > 0)
+			{
+				uip_arp_out();							//加以太网头结构，在主动连接时可能要构造ARP请求
+				tapdev_send();							//发送数据到以太网
+			}
+		}
+#endif 
+		//每隔10秒调用1次ARP定时器函数 用于定期ARP处理,ARP表10秒更新一次，旧的条目会被抛弃
+		if(timer_expired(&arp_timer))
+		{
+			timer_reset(&arp_timer);
+			uip_arp_timer();
+		}
+	}
+}
+
+
+u8 const myMAC[] = {0x00, 0x0e, 0x00, 0x25, 0x36, 0x64}; 
+void vNETTask( void *pvParameters )
+{
+//	uip_ipaddr_t ipaddr;
+//	u16 temp;
+//	u8 tcp_server_tsta = 0XFF;
+//	u8 tcp_client_tsta = 0XFF;
+	 
+	BL_OFF();
+// 	printf("Temco ARM Demo\r\n");
+	delay_ms(500);
+	
+	while(tapdev_init())	//初始化ENC28J60错误
+	{								   
+// 		printf("ENC28J60 Init Error!\r\n");
+		delay_ms(200);
+	};		
+//	printf("ENC28J60 Init Successful!\r\n");
+ 
+    for( ;; )
+	{ 
+		uip_polling();	//处理uip事件，必须插入到用户程序的循环体中  		 
+		delay_ms(5);
+    }
+}
+ 

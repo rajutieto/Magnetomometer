@@ -70,16 +70,16 @@ u8 tapdev_init(void)
 #ifndef	DHCP_ENABLE	
 	uip_init();							//uIP初始化
 	
-	uip_ipaddr(ipaddr, 192, 168, 0, 90);	//设置本地设置IP地址
+	uip_ipaddr(ipaddr, 192, 168, 0, 112);	//设置本地设置IP地址
 	uip_sethostaddr(ipaddr);					    
-	uip_ipaddr(ipaddr, 192, 168, 0, 1); 	//设置网关IP地址(其实就是你路由器的IP地址)
+	uip_ipaddr(ipaddr, 192, 168, 0, 4); 	//设置网关IP地址(其实就是你路由器的IP地址)
 	uip_setdraddr(ipaddr);						 
 	uip_ipaddr(ipaddr, 255, 255, 255, 0);	//设置网络掩码
 	uip_setnetmask(ipaddr);
 
-	printf("IP:192.168.0.90\r\n"); 
-	printf("MASK:255.255.255.0\r\n"); 
-	printf("GATEWAY:192.168.0.1\r\n");
+//	printf("IP:192.168.0.90\r\n"); 
+//	printf("MASK:255.255.255.0\r\n"); 
+//	printf("GATEWAY:192.168.0.1\r\n");
 	
 	uip_listen(HTONS(1200));			//监听1200端口,用于TCP Server
 	uip_listen(HTONS(80));				//监听80端口,用于Web Server

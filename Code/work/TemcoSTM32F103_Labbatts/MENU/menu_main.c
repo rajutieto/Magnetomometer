@@ -11,11 +11,11 @@ static  u8 const item_name[MAX_MAIN_ITEMS][18] =
 {
 	"1.Sensor1 Config",
 	"2.Sensor2 Config",
-	"3.Timer Set",
+	"3.Miscellaneous",
 	"4.About "
 };
 
-static  u8 const item[] = {Sensor1_Conf, Sensor2_Conf,MenuAbout}; 
+static  u8 const item[] = {Sensor1_Conf, Sensor2_Conf,MenuMisc,MenuAbout}; 
 
 static u8 item_index = 0;
 static u8 pre_item_index = 0;

@@ -2,8 +2,13 @@
 #include "modbus.h"
 #include "led.h"
 
+u8 pre_alarm_on_time = 2;
+u8 pre_alarm_off_time = 2;
+
 _RM3100_ rm3100[2];  
 _PRINT_BUF_ print_buf[REC_TIMER_TOTAL+1];
+_PRINT_BUF_ tcp_buf[REC_TIMER_TOTAL+1];
+
  /*
 
 s16 clbr_value[10][2];

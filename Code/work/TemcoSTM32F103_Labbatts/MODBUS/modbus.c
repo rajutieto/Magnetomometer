@@ -19,6 +19,8 @@ u8 Uart_Rec_Buf[TOTAL_UART][MAX_BUF];
 
 u16 rec_timer =0;
  
+STR_MODBUS Modbus; 
+ 
 void uart_serial_restart(u8 channel)
 {
    uart_rece_count[channel] = 0; 

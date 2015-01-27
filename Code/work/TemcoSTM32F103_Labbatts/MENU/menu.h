@@ -4,15 +4,17 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #define MENU_BLOCK_SECONDS_DEFAULT		60
-//#define BACKLIGHT_KEEP_SECONDS_DEFAULT	30
+#define BACKLIGHT_KEEP_SECONDS_DEFAULT	30
 #define SWTIMER_COUNT_SECOND         100
+
+#define MAX_PASSWORD_DIGITALS	4
 enum
 {
 	MenuIdle = 0,
 		MenuMain,
 			Sensor1_Conf,
 			Sensor2_Conf,
-			RTC_Conf,
+			MenuMisc,
 			MenuAbout,
   
 	MenuEnd,
@@ -45,6 +47,15 @@ extern struct _DISPLAY_ display;
 extern u8 in_sub_menu;
 extern u8 value_change;
 extern u8 text[150];
+extern uint8 menu_password;
+extern uint8 use_password;
+extern uint8 password_buffer[4];
+extern uint8 user_password[4];
+extern uint8 password_index;
+
+extern uint32 menu_block_timer_start, menu_block_timer_end;
+extern uint8 menu_block_seconds;
+extern uint8 backlight_keep_seconds;
 
 void vStartMenuTask(portBASE_TYPE uxPriority);
 void update_menu_state(u8 MenuId);
@@ -70,10 +81,9 @@ void Sensor2_Conf_display(void);
 void Sensor2_Conf_keycope(u16 key_value);
 
 //menu rtc.c
-void RTC_Conf_init(void);
-void RTC_Conf_display(void);
-void RTC_Conf_keycope(u16 key_value);
-
+void Misc_init(void);
+void Misc_display(void);
+void Misc_keycope(u16 key_value); 
 //menu about .c 
 void About_init(void);
 void About_display(void);

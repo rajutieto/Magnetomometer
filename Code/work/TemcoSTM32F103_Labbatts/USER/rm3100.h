@@ -6,9 +6,9 @@
 void rm3100_detect(void);
 void rm3100_initial(void);
 void rm3100_reset(void);
-void  rm3100_clear(void);
+void rm3100_clear(void);
 
-#define REC_TIMER_TOTAL             500
+#define REC_TIMER_TOTAL             300
 #define START_REC_TIMER             50
 #define END_REC_TIMER               50
 
@@ -33,18 +33,27 @@ typedef struct
 	
 } _RM3100_;
 
+ 
+#pragma pack(push)
+#pragma pack(1)
 typedef struct 
 {
 	s32 RM3100_0[TOTAL_AXIS];
 	s32 RM3100_1[TOTAL_AXIS];
-	u16 FGM_1;
-	u16 FGM_2;
+//	u16 FGM_1;
+//	u16 FGM_2;
 	u8  opto_status;
 } _PRINT_BUF_;
+#pragma pack(pop)
 
+#define PRINT_BUF_SIZE		sizeof(_PRINT_BUF_)
+ 
 extern _PRINT_BUF_ print_buf[REC_TIMER_TOTAL+1];
-
+extern _PRINT_BUF_ tcp_buf[REC_TIMER_TOTAL+1];
 extern _RM3100_ rm3100[2]; 
+
+extern u8 pre_alarm_on_time;
+extern u8 pre_alarm_off_time;
 
 #endif
 

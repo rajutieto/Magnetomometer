@@ -54,8 +54,26 @@ void tcp_client_timedout(void);
 void tcp_client_closed(void);
 void tcp_client_acked(void);
 void tcp_client_senddata(void);
-////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////// 
+#define BUF_LEN			40
 
+extern u8 mac_address[6];//registers: 100 101 102 103 104 105
+extern u8 ip_mode ;//register: 106, 0 = static, 1 = DHCP
+extern u8 ip_address[4];//registers: 107 108 109 110
+extern u8 subnet_mask_address[4];//registers: 111 112 113 114
+extern u8 gateway_address[4];//registers: 115 116 117 118
+extern u8 tcp_server_enable;//registers 119
+extern u8 listen_port_at_tcp_server_mode[2];//register 120 121
+
+extern u8 ip_mode_ghost;//register: 106, 0 = static, 1 = DHCP
+extern u8 ip_address_ghost[4];//registers: 107 108 109 110
+extern u8 subnet_mask_address_ghost[4];//registers: 111 112 113 114
+extern u8 gateway_address_ghost[4];//registers: 115 116 117 118
+extern u8 tcp_server_enable_ghost;//registers 119
+extern u8 listen_port_at_tcp_server_mode_ghost[2];//register 120 121
+extern u8 enable_ghost; 
+extern u16 uart_buf_len;
+extern u8 tcp_buf_ready;
 
 #endif
 
