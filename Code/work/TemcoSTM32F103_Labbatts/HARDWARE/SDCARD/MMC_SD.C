@@ -3,7 +3,7 @@
 #include "usart.h"
 #include <stdio.h>
 
-					   					   
+u8 SD_Card_Status = 0;					   					   
 u8 SD_Type = 0;	//SD卡的类型 
 ////////////////////////////////////移植修改区///////////////////////////////////
 //移植时候的接口
@@ -27,7 +27,7 @@ void SD_SPI_SpeedHigh(void)
 }
 
 //SPI硬件层初始化
-void SD_SPI_Init(void)
+void SD_CS_Output(void)
 {
   	GPIO_InitTypeDef GPIO_InitStructure;
 
@@ -39,7 +39,20 @@ void SD_SPI_Init(void)
  	GPIO_Init(GPIOB, &GPIO_InitStructure);
  	GPIO_SetBits(GPIOB,GPIO_Pin_12);						 //PB12上拉
 	
-	SD_CS = 1;
+//	SD_CS = 1;
+}
+void SD_CS_Input(void)
+{
+  	GPIO_InitTypeDef GPIO_InitStructure;
+
+ 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);	 //使能PB端口时钟
+
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_12;				 //PB12推挽 
+ 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD; 		     //下拉输入
+ 	GPIO_Init(GPIOB, &GPIO_InitStructure);
+// 	GPIO_SetBits(GPIOB,GPIO_Pin_12);						 //PB12上拉
+	
+//	SD_CS = 1;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -230,7 +243,7 @@ u8 SD_Initialize(void)
     u8 buf[4];  
 	u16 i;
 
-	SD_SPI_Init();		//初始化IO
+	SD_CS_Output();		//初始化IO
  	SD_SPI_SpeedLow();	//设置到低速模式 
  	for(i = 0; i < 10; i++)SD_SPI_ReadWriteByte(0XFF);//发送最少74个脉冲
 	retry = 20;

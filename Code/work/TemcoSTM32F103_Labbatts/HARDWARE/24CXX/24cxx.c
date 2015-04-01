@@ -1,10 +1,22 @@
 #include "24cxx.h" 
 #include "delay.h" 										 
+//初始化写保护
+static void WP_Memory_Init(void)
+{
+	GPIO_InitTypeDef GPIO_InitStructure;
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOD, ENABLE);//使能GPIOD时钟
 
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_Init(GPIOD, &GPIO_InitStructure);
+	GPIO_SetBits(GPIOD, GPIO_Pin_3);
+}
 //初始化IIC接口
 void AT24CXX_Init(void)
 {
 	IIC_Init();
+	WP_Memory_Init();
 }
 
 //在AT24CXX指定地址读出一个数据
@@ -12,7 +24,9 @@ void AT24CXX_Init(void)
 //返回值  :读到的数据
 u8 AT24CXX_ReadOneByte(u16 ReadAddr)
 {				  
-	u8 temp = 0;		  	    																 
+	u8 temp = 0;
+	
+	
     IIC_Start();  
 	if(EE_TYPE > AT24C16)
 	{
@@ -34,7 +48,8 @@ u8 AT24CXX_ReadOneByte(u16 ReadAddr)
 	IIC_Wait_Ack();	 
     temp = IIC_Read_Byte(0);
 			   
-    IIC_Stop();							//产生一个停止条件	    
+    IIC_Stop();							//产生一个停止条件	 
+ 
 	return temp;
 }
 
@@ -43,7 +58,8 @@ u8 AT24CXX_ReadOneByte(u16 ReadAddr)
 //DataToWrite:要写入的数据
 void AT24CXX_WriteOneByte(u16 WriteAddr, u8 DataToWrite)
 {				   	  	    																 
-    IIC_Start();  
+    WP_MEMORY = 0;	//enable write
+	IIC_Start();  
 	if(EE_TYPE > AT24C16)
 	{
 		IIC_Send_Byte(0XA0);			//发送写命令
@@ -62,6 +78,7 @@ void AT24CXX_WriteOneByte(u16 WriteAddr, u8 DataToWrite)
 	IIC_Wait_Ack();
 	  		    	   
     IIC_Stop();							//产生一个停止条件 
+	WP_MEMORY = 1;	//disable write
 	delay_ms(5);	 
 }
 

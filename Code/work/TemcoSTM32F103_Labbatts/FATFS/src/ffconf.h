@@ -57,7 +57,7 @@
 / Locale and Namespace Configurations
 /----------------------------------------------------------------------------*/
 
-#define _CODE_PAGE	936	//采用中文GBK编码
+#define _CODE_PAGE	1//936	//采用中文GBK编码
 /* The _CODE_PAGE specifies the OEM code page to be used on the target system.
 /  Incorrect setting of the code page can cause a file open failure.
 /
@@ -90,7 +90,7 @@
 */
 
 
-#define	_USE_LFN	3		/* 0 to 3 设置为1,支持长文件名，并采用动态内存*/
+#define	_USE_LFN	0		/* 0 to 3 设置为1,支持长文件名，并采用动态内存*/
 #define	_MAX_LFN	255		/* Maximum LFN length to handle (12 to 255) */
 /* The _USE_LFN option switches the LFN support.
 /
@@ -125,7 +125,7 @@
 / Physical Drive Configurations
 /----------------------------------------------------------------------------*/
 
-#define _VOLUMES	2	 //支持2个磁盘
+#define _VOLUMES	1	 //支持2个磁盘
 /* Number of volumes (logical drives) to be used. */
 
 

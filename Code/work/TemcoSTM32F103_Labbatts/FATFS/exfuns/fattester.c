@@ -116,83 +116,83 @@ u8 mf_opendir(u8* path)
 
 //打读取文件夹
 //返回值:执行结果
-u8 mf_readdir(void)
-{
-	u8 res;
-	char *fn;			 
-#if _USE_LFN
- 	fileinfo.lfsize = _MAX_LFN * 2 + 1;
-	fileinfo.lfname = mymalloc(SRAMIN,fileinfo.lfsize);
-#endif
-	
-	res = f_readdir(&dir, &fileinfo);//读取一个文件的信息
-	if(res != FR_OK || fileinfo.fname[0] == 0)
-	{
-		myfree(SRAMIN, fileinfo.lfname);
-		return res;//读完了.
-	}
-	
-#if _USE_LFN
-	fn = *fileinfo.lfname ? fileinfo.lfname : fileinfo.fname;
-#else
-	fn = fileinfo.fname;
-#endif
-	
-	printf("\r\n DIR info:\r\n");
+//u8 mf_readdir(void)
+//{
+//	u8 res;
+//	char *fn;			 
+//#if _USE_LFN
+// 	fileinfo.lfsize = _MAX_LFN * 2 + 1;
+//	fileinfo.lfname = mymalloc(SRAMIN,fileinfo.lfsize);
+//#endif
+//	
+//	res = f_readdir(&dir, &fileinfo);//读取一个文件的信息
+//	if(res != FR_OK || fileinfo.fname[0] == 0)
+//	{
+//		myfree(SRAMIN, fileinfo.lfname);
+//		return res;//读完了.
+//	}
+//	
+//#if _USE_LFN
+//	fn = *fileinfo.lfname ? fileinfo.lfname : fileinfo.fname;
+//#else
+//	fn = fileinfo.fname;
+//#endif
+//	
+//	printf("\r\n DIR info:\r\n");
 
-	printf("dir.id:%d\r\n", dir.id);
-	printf("dir.index:%d\r\n", dir.index);
-	printf("dir.sclust:%d\r\n", dir.sclust);
-	printf("dir.clust:%d\r\n", dir.clust);
-	printf("dir.sect:%d\r\n", dir.sect);	  
+//	printf("dir.id:%d\r\n", dir.id);
+//	printf("dir.index:%d\r\n", dir.index);
+//	printf("dir.sclust:%d\r\n", dir.sclust);
+//	printf("dir.clust:%d\r\n", dir.clust);
+//	printf("dir.sect:%d\r\n", dir.sect);	  
 
-	printf("\r\n");
-	printf("File Name is:%s\r\n", fn);
-	printf("File Size is:%d\r\n", fileinfo.fsize);
-	printf("File data is:%d\r\n", fileinfo.fdate);
-	printf("File time is:%d\r\n", fileinfo.ftime);
-	printf("File Attr is:%d\r\n", fileinfo.fattrib);
-	printf("\r\n");
-	myfree(SRAMIN, fileinfo.lfname);
-	return 0;
-}			 
+//	printf("\r\n");
+//	printf("File Name is:%s\r\n", fn);
+//	printf("File Size is:%d\r\n", fileinfo.fsize);
+//	printf("File data is:%d\r\n", fileinfo.fdate);
+//	printf("File time is:%d\r\n", fileinfo.ftime);
+//	printf("File Attr is:%d\r\n", fileinfo.fattrib);
+//	printf("\r\n");
+//	myfree(SRAMIN, fileinfo.lfname);
+//	return 0;
+//}			 
 
  //遍历文件
  //path:路径
  //返回值:执行结果
-u8 mf_scan_files(char *path)
-{
-	FRESULT res;	  
-    char *fn;   /* This function is assuming non-Unicode cfg. */
-#if _USE_LFN
- 	fileinfo.lfsize = _MAX_LFN * 2 + 1;
-	fileinfo.lfname = mymalloc(SRAMIN, fileinfo.lfsize);
-#endif		  
+//u8 mf_scan_files(char *path)
+//{
+//	FRESULT res;	  
+//    char *fn;   /* This function is assuming non-Unicode cfg. */
+//#if _USE_LFN
+// 	fileinfo.lfsize = _MAX_LFN * 2 + 1;
+//	fileinfo.lfname = mymalloc(SRAMIN, fileinfo.lfsize);
+//#endif		  
 
-    res = f_opendir(&dir, (const TCHAR*)path); //打开一个目录
-    if (res == FR_OK) 
-	{	
-		printf("\r\n"); 
-		while(1)
-		{
-	        res = f_readdir(&dir, &fileinfo);                   //读取目录下的一个文件
-	        if (res != FR_OK || fileinfo.fname[0] == 0) break;  //错误了/到末尾了,退出
-	        //if (fileinfo.fname[0] == '.') continue;             //忽略上级目录
-			
-#if _USE_LFN
-        	fn = *fileinfo.lfname ? fileinfo.lfname : fileinfo.fname;
-#else							   
-        	fn = fileinfo.fname;
-#endif	                                              /* It is a file. */
-			
-			printf("%s/", path);//打印路径	
-			printf("%s\r\n",  fn);//打印文件名	  
-		} 
-    }
-	
-	myfree(SRAMIN, fileinfo.lfname);
-    return res;	  
-}
+//    res = f_opendir(&dir, (const TCHAR*)path); //打开一个目录
+//    if (res == FR_OK) 
+//	{	
+//		printf("\r\n"); 
+//		while(1)
+//		{
+//	        res = f_readdir(&dir, &fileinfo);                   //读取目录下的一个文件
+//	        if (res != FR_OK || fileinfo.fname[0] == 0) break;  //错误了/到末尾了,退出
+//	        //if (fileinfo.fname[0] == '.') continue;             //忽略上级目录
+//			
+//#if _USE_LFN
+//        	fn = *fileinfo.lfname ? fileinfo.lfname : fileinfo.fname;
+//#else							   
+//        	fn = fileinfo.fname;
+//#endif	                                              /* It is a file. */
+//			
+//			printf("%s/", path);//打印路径	
+//			printf("%s\r\n",  fn);//打印文件名	  
+//		} 
+//    }
+//	
+//	myfree(SRAMIN, fileinfo.lfname);
+//    return res;	  
+//}
 
 //显示剩余容量
 //drv:盘符

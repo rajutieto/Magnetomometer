@@ -37,7 +37,8 @@
 #include "uip.h"
 #include "enc28j60.h"
 #include <stdio.h>
-
+#include "tcp_demo.h"
+#include "delay.h"
 //#define DHCP_ENABLE
 
 //用于固定IP地址开关打开后的IP设置，本例程没有用这个
@@ -47,52 +48,72 @@
 #define UIP_DRIPADDR3   111
 
 //MAC地址,必须唯一
-const u8 mymac[6]={0x04, 0x02, 0x35, 0x00, 0x00, 0x01};	//MAC地址
+//const u8 mymac[6]={0x04, 0x02, 0x35, 0x00, 0x00, 0x01};	//MAC地址
 																				  
 //配置网卡硬件，并设置MAC地址 
 //返回值：0，正常；1，失败；
 u8 tapdev_init(void)
 {   	 
 	u8 i, res = 0;
-#ifndef	DHCP_ENABLE
+//#ifndef	DHCP_ENABLE
 	uip_ipaddr_t ipaddr;
-#endif
+//#endif
 	
-	res = ENC28J60_Init((u8*)mymac);	//初始化ENC28J60					  
+//	res = ENC28J60_Init((u8*)mymac);	//初始化ENC28J60					  
+	while( ENC28J60_Init((u8*)mac_address))
+	{	
+		delay_ms(500);
+		
+	}
 	//把IP地址和MAC地址写入缓存区
  	for (i = 0; i < 6; i++)
-		uip_ethaddr.addr[i] = mymac[i];
-	
+//		uip_ethaddr.addr[i] = mymac[i];
+		uip_ethaddr.addr[i] = mac_address[i];
     //指示灯状态:0x476 is PHLCON LEDA(绿)=links status, LEDB(红)=receive/transmit
  	//PHLCON：PHY 模块LED 控制寄存器	    
 	ENC28J60_PHY_Write(PHLCON, 0x0476);
+	delay_ms(500);
+//#ifndef	DHCP_ENABLE	
+	if(ip_mode == 0)
+	{
+		uip_init();							//uIP初始化
+		
+	//	uip_ipaddr(ipaddr, 192, 168, 0, 158);	//设置本地设置IP地址
+		uip_ipaddr(ipaddr, ip_address[0], ip_address[1], ip_address[2], ip_address[3]);
+		uip_sethostaddr(ipaddr);					    
+		
+	//	uip_ipaddr(ipaddr, 192, 168, 0, 4); 	//设置网关IP地址(其实就是你路由器的IP地址)
+		uip_ipaddr(ipaddr, gateway_address[0], gateway_address[1], gateway_address[2], gateway_address[3]); 	//设置网关IP地址(其实就是你路由器的IP地址)
+		uip_setdraddr(ipaddr);						 
+		
+	//	uip_ipaddr(ipaddr, 255, 255, 255, 0);	//设置网络掩码
+		uip_ipaddr(ipaddr, subnet_mask_address[0], subnet_mask_address[1], subnet_mask_address[2], subnet_mask_address[3]);
+		uip_setnetmask(ipaddr);
 
-#ifndef	DHCP_ENABLE	
-	uip_init();							//uIP初始化
+//	printf("IP:192.168.0.90\r\n"); 
+//	printf("MASK:255.255.255.0\r\n"); 
+//	printf("GATEWAY:192.168.0.1\r\n");
 	
-	uip_ipaddr(ipaddr, 192, 168, 0, 90);	//设置本地设置IP地址
-	uip_sethostaddr(ipaddr);					    
-	uip_ipaddr(ipaddr, 192, 168, 0, 1); 	//设置网关IP地址(其实就是你路由器的IP地址)
-	uip_setdraddr(ipaddr);						 
-	uip_ipaddr(ipaddr, 255, 255, 255, 0);	//设置网络掩码
-	uip_setnetmask(ipaddr);
+//	uip_listen(HTONS(1200));			//监听1200端口,用于TCP Server
+//	uip_listen(HTONS(((u16)listen_port_at_tcp_server_mode[1]<<8)+listen_port_at_tcp_server_mode[0]));
+//	uip_listen(HTONS(80));				//监听80端口,用于Web Server
+//	tcp_client_reconnect();	   		    //尝试连接到TCP Server端,用于TCP Client
+//	
+//	udp_app_init();
+	}
+//#else
+	else if(ip_mode == 1)
+	{
+		//dhcpc_init(&mymac, 6);
+		dhcpc_init(&mac_address,6);
+		dhcpc_request();
+		 
+//		uip_listen(HTONS(((u16)listen_port_at_tcp_server_mode[1]<<8)+listen_port_at_tcp_server_mode[0]));
+	}
+//#endif
 
-	printf("IP:192.168.0.90\r\n"); 
-	printf("MASK:255.255.255.0\r\n"); 
-	printf("GATEWAY:192.168.0.1\r\n");
-	
-	uip_listen(HTONS(1200));			//监听1200端口,用于TCP Server
-	uip_listen(HTONS(80));				//监听80端口,用于Web Server
-	tcp_client_reconnect();	   		    //尝试连接到TCP Server端,用于TCP Client
-	
-	udp_app_init();
-	
-#else
-	dhcpc_init(&mymac, 6);
-	dhcpc_request();
-#endif
-
-	return res;	
+//	return res;	
+	return 0;	
 }
 
 //读取一包数据  

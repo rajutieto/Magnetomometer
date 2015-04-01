@@ -4,17 +4,20 @@
 #include "../menu/menu.h"
 #include "../key/key.h"
 #include "rm3100.h"
+#include "modbus.h"
+#include "24cxx.h"
 
 static u8 item_index = 0;
 static u8 pre_item_index = 0;
 
 static u16 set_value;
 
-#define MAX_TEMP_ITEMS	2
+#define MAX_TEMP_ITEMS	3
 static u8 const code item_name[MAX_TEMP_ITEMS][17] = 
 {
-	"1.Filter: ",
-	"2.Sensitivity: ",  
+	"1.Filter_X1:", 
+	"1.Filter_Y1:",
+	"1.Filter_Z1:",
 };
 
 void Sensor1_Conf_init(void)
@@ -25,12 +28,15 @@ void Sensor1_Conf_init(void)
 	{
 		switch(i)
 		{
-			case 0: // filter 
-				sprintf((char *)text, "%s%2u", item_name[i], rm3100[0].filter);				 
-			break;
-			case 1:	// sensitivity 
-				sprintf((char *)text, "%s%3u", item_name[i], rm3100[0].sensitivity); 	
-			break; 	 
+			case 0: // filter X 
+  				sprintf((char *)text, "%s%2u", item_name[i],pni[0].Filter[0]);				 
+			break; 
+			case 1: // filter X 
+  				sprintf((char *)text, "%s%2u", item_name[i],pni[0].Filter[1]);				 
+			break; 
+			case 2: // filter X 
+  				sprintf((char *)text, "%s%2u", item_name[i],pni[0].Filter[2]);				 
+			break;  	 
 		}
 
 		if(i == item_index)
@@ -50,24 +56,30 @@ void Sensor1_Conf_display(void)
 		{
 			switch(pre_item_index)
 			{  
-				case 0: // filter 
-					sprintf((char *)text, "%s%2u", item_name[pre_item_index], rm3100[0].filter);				 
-				break;
-				case 1:	// sensitivity 
-					sprintf((char *)text, "%s%3u", item_name[pre_item_index], rm3100[0].sensitivity); 	
-				break; 	  
+				case 0: // filter X 
+					sprintf((char *)text, "%s%2u", item_name[pre_item_index],pni[0].Filter[0]);				 
+				break; 
+				case 1: // filter X 
+					sprintf((char *)text, "%s%2u", item_name[pre_item_index],pni[0].Filter[1]);				 
+				break; 
+				case 2: // filter X 
+					sprintf((char *)text, "%s%2u", item_name[pre_item_index],pni[0].Filter[2]);				 
+				break;   
 			}
 			Lcd_Clear_Row(pre_item_index);
 			Lcd_Show_String(pre_item_index, 0, DISP_NOR, (char *)text);
 
 			switch(item_index)
 			{
-				case 0: // filter 
-					sprintf((char *)text, "%s%2u", item_name[item_index], rm3100[0].filter);				 
-				break;
-				case 1:	// sensitivity 
-					sprintf((char *)text, "%s%3u", item_name[item_index], rm3100[0].sensitivity); 	
+				case 0: // filter X 
+					sprintf((char *)text, "%s%2u", item_name[item_index],pni[0].Filter[0]);				 
 				break; 
+				case 1: // filter X 
+					sprintf((char *)text, "%s%2u", item_name[item_index],pni[0].Filter[1]);				 
+				break; 
+				case 2: // filter X 
+					sprintf((char *)text, "%s%2u", item_name[item_index],pni[0].Filter[2]);				 
+				break;  
 				 
 			}
 			Lcd_Clear_Row(item_index);
@@ -86,11 +98,15 @@ void Sensor1_Conf_display(void)
 				 
 				case 0: // filter  
 					sprintf((char *)text, "%2u", set_value);
-					Lcd_Show_String(item_index, 10, DISP_INV, (char *)text);
-				break;
-				case 1:	// sensitivity   
-					sprintf((char *)text, "%3u", set_value);
-					Lcd_Show_String(item_index, 15, DISP_INV, (char *)text);					
+					Lcd_Show_String(item_index, 12, DISP_INV, (char *)text);
+				break; 
+				case 1: // filter  
+					sprintf((char *)text, "%2u", set_value);
+					Lcd_Show_String(item_index, 12, DISP_INV, (char *)text);
+				break; 
+				case 2: // filter  
+					sprintf((char *)text, "%2u", set_value);
+					Lcd_Show_String(item_index, 12, DISP_INV, (char *)text);
 				break; 
 			}
 			
@@ -102,7 +118,7 @@ void Sensor1_Conf_display(void)
 void Sensor1_Conf_keycope(u16 key_value)
 {
 //	start_back_light(backlight_keep_seconds);
-	switch(key_value )
+	switch(key_value & KEY_SPEED_MASK )
 	{
 		case KEY_NON:
 			// do nothing
@@ -116,11 +132,14 @@ void Sensor1_Conf_keycope(u16 key_value)
 			{
 				switch(item_index)
 				{
-					case 0: // filter 
-						sprintf((char *)text, "%s%2u", item_name[item_index], rm3100[0].filter);				 
-					break;
-					case 1:	// sensitivity 
-						sprintf((char *)text, "%s%3u", item_name[item_index], rm3100[0].sensitivity); 	
+					case 0: // filter X 
+						sprintf((char *)text, "%s%2u", item_name[item_index],pni[0].Filter[0]);				 
+					break; 
+					case 1: // filter X 
+						sprintf((char *)text, "%s%2u", item_name[item_index],pni[0].Filter[1]);				 
+					break; 
+					case 2: // filter X 
+						sprintf((char *)text, "%s%2u", item_name[item_index],pni[0].Filter[2]);				 
 					break; 
 					 
 				}
@@ -136,14 +155,19 @@ void Sensor1_Conf_keycope(u16 key_value)
 				{
 					 
 					case 0: // filter 
-						set_value = rm3100[0].filter;
+ 						set_value = pni[0].Filter[0];
 						sprintf((char *)text, "%2u", set_value);
-						Lcd_Show_String(item_index, 10, DISP_INV, (char *)text);
-					break;
-					case 1:	// sensitivity  
-						set_value = rm3100[0].sensitivity;
-						sprintf((char *)text, "%3u", set_value);
-						Lcd_Show_String(item_index, 15, DISP_INV, (char *)text);					
+						Lcd_Show_String(item_index, 12, DISP_INV, (char *)text);
+					break; 
+					case 1: // filter 
+ 						set_value = pni[0].Filter[1];
+						sprintf((char *)text, "%2u", set_value);
+						Lcd_Show_String(item_index, 12, DISP_INV, (char *)text);
+					break; 
+					case 2: // filter 
+ 						set_value = pni[0].Filter[2];
+						sprintf((char *)text, "%2u", set_value);
+						Lcd_Show_String(item_index, 12, DISP_INV, (char *)text);
 					break; 
 					 
 				}
@@ -155,12 +179,19 @@ void Sensor1_Conf_keycope(u16 key_value)
 				switch(item_index)
 				{ 
 					case 0: // filter 
-						rm3100[0].filter = set_value ;
+ 						pni[0].Filter[0] = set_value ;
 						sprintf((char *)text, "%s%2u", item_name[item_index], set_value); 
-					break;
-					case 1:	// sensitivity  
-						rm3100[0].sensitivity = set_value;
-						sprintf((char *)text, "%s%3u", item_name[item_index], set_value); 					
+						AT24CXX_WriteOneByte(EEP_PNI0_FILTER_X ,set_value);
+					break; 
+					case 1: // filter 
+ 						pni[0].Filter[1] = set_value ;
+						sprintf((char *)text, "%s%2u", item_name[item_index], set_value); 
+						AT24CXX_WriteOneByte(EEP_PNI0_FILTER_Y ,set_value);
+					break; 
+					case 2: // filter 
+ 						pni[0].Filter[2] = set_value ;
+						sprintf((char *)text, "%s%2u", item_name[item_index], set_value); 
+						AT24CXX_WriteOneByte(EEP_PNI0_FILTER_Z ,set_value);
 					break; 
 					 
 				}
@@ -183,12 +214,13 @@ void Sensor1_Conf_keycope(u16 key_value)
 				{
 					case 0:
 						 if(set_value < 100) set_value++;
-					break;
+					break; 
 					case 1:
-						if(set_value < 1000)
-							set_value+=10; 						
-						break;
-					 
+						 if(set_value < 100) set_value++;
+					break; 
+					case 2:
+						 if(set_value < 100) set_value++;
+					break; 
 				}
 
 				value_change = TRUE;
@@ -210,7 +242,11 @@ void Sensor1_Conf_keycope(u16 key_value)
 						break;
 					case 1:
 						if(set_value)
-							set_value-=10; 						
+							set_value--; 						
+						break;
+					case 2:
+						if(set_value)
+							set_value--; 						
 						break;
 					 
 				}

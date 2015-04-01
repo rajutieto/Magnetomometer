@@ -45,6 +45,7 @@
 //这部分应根据具体的连线来修改!
 //Mini STM32使用的是PB12作为SD卡的CS脚.
 #define	SD_CS	PBout(12) //SD卡片选引脚					    	  
+#define	SD_CS_IN PBin(12) //SD卡片选引脚	
 
 extern u8 SD_Type;//SD卡的类型
 //函数申明区 
@@ -60,6 +61,12 @@ u32 SD_GetSectorCount(void);   					//读扇区数
 u8 SD_GetCID(u8 *cid_data);                     //读SD卡CID
 u8 SD_GetCSD(u8 *csd_data);                     //读SD卡CSD
  
+void SD_CS_Output(void);
+void SD_CS_Input(void);
+extern u8 SD_Card_Status;
+//CS方向设置
+//#define CS_IN()		{GPIOD->CRH &= 0XFFF0FFFF; GPIOD->CRL |= ((u32)8 << 20);}
+//#define CS_OUT()	{GPIOD->CRH &= 0XFFF0FFFF; GPIOD->CRL |= ((u32)3 << 20);}
 #endif
 
 

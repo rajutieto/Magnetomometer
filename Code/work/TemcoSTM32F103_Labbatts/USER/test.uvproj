@@ -305,8 +305,8 @@
               </OCR_RVCT3>
               <OCR_RVCT4>
                 <Type>1</Type>
-                <StartAddress>0x8000000</StartAddress>
-                <Size>0x80000</Size>
+                <StartAddress>0x8008000</StartAddress>
+                <Size>0x78000</Size>
               </OCR_RVCT4>
               <OCR_RVCT5>
                 <Type>1</Type>
@@ -361,7 +361,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F10X_HD, USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\CORE;..\USER;..\STM32F10x_FWLib\inc;..\HARDWARE\LED;..\HARDWARE\LCD;..\FreeRTOS\include;..\FreeRTOS\portable\RVDS\ARM_CM3;..\SYSTEM\delay;..\SYSTEM\usart;..\SYSTEM;..\HARDWARE\KEY;..\HARDWARE\IIC;..\HARDWARE\24CXX;..\HARDWARE\SPI;..\HARDWARE\TOUCH;..\HARDWARE\FLASH;..\HARDWARE\STMFLASH;..\HARDWARE\DMA;..\HARDWARE\SDCARD;..\FATFS\src;..\FATFS\exfuns;..\VMALLOC;..\HARDWARE\TIMER;..\HARDWARE\ENC28J60;..\uIP-1.0\uip;..\uIP-1.0\apps\dhcpc;..\uIP-1.0\apps\resolv;..\uIP-1.0\apps\webserver;..\uIP-APP;..\HARDWARE\RTC;..\USB\CONFIG\inc;..\USB\LIB\inc;..\USB\APP;..\APP\FGM3;..\MODBUS;..\MENU</IncludePath>
+              <IncludePath>..\CORE;..\USER;..\STM32F10x_FWLib\inc;..\HARDWARE\LED;..\HARDWARE\LCD;..\HARDWARE\RM3100;..\FreeRTOS\include;..\FreeRTOS\portable\RVDS\ARM_CM3;..\SYSTEM\delay;..\SYSTEM\usart;..\SYSTEM;..\HARDWARE\KEY;..\HARDWARE\IIC;..\HARDWARE\24CXX;..\HARDWARE\SPI;..\HARDWARE\TOUCH;..\HARDWARE\FLASH;..\HARDWARE\STMFLASH;..\HARDWARE\DMA;..\HARDWARE\SDCARD;..\FATFS\src;..\FATFS\exfuns;..\VMALLOC;..\HARDWARE\TIMER;..\HARDWARE\ENC28J60;..\uIP-1.0\uip;..\uIP-1.0\apps\dhcpc;..\uIP-1.0\apps\resolv;..\uIP-1.0\apps\webserver;..\uIP-APP;..\HARDWARE\RTC;..\USB\CONFIG\inc;..\USB\LIB\inc;..\USB\APP;..\APP\FGM3;..\MODBUS;..\MENU</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -638,6 +638,11 @@
               <FileName>rtc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\RTC\rtc.c</FilePath>
+            </File>
+            <File>
+              <FileName>RM3100_DRI.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\RM3100\RM3100_DRI.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -923,13 +928,6 @@
         </Group>
         <Group>
           <GroupName>APP</GroupName>
-          <Files>
-            <File>
-              <FileName>Labatts.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\APP\FGM3\Labatts.c</FilePath>
-            </File>
-          </Files>
         </Group>
         <Group>
           <GroupName>MENU</GroupName>
