@@ -9,7 +9,7 @@ void TIM3_IRQHandler(void)
 //	{
 //		LED1 = !LED1;
 //	}
-	FGM3_ISR();
+//	FGM3_ISR();
 	TIM_ClearFlag(TIM3, TIM_IT_Update);	
 }
 

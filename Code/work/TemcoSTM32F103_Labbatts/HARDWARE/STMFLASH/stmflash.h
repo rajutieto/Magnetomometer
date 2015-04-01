@@ -13,7 +13,7 @@
 #define STM32_FLASH_SIZE 	512 	 		//所选STM32的FLASH容量大小(单位为K)
 #define STM32_FLASH_WREN 	1              	//使能FLASH写入(0，不是能;1，使能)
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-
+#define DATA_TO_ISP			0x7800          //page 15 
 //FLASH起始地址
 #define	STM32_FLASH_BASE 			0x08000000 	//STM32 FLASH的起始地址
 //FLASH解锁键值

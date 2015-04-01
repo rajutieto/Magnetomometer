@@ -449,7 +449,7 @@ dhcpc_request(void)
   if(s.state == STATE_INITIAL) {
     uip_ipaddr(ipaddr, 0,0,0,0);
     uip_sethostaddr(ipaddr);
-    /*    handle_dhcp(PROCESS_EVENT_NONE, NULL);*/
+/*         handle_dhcp(PROCESS_EVENT_NONE, NULL); */
   }
 }
 /*---------------------------------------------------------------------------*/

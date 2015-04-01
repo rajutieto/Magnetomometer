@@ -34,8 +34,8 @@ void tcp_server_demo_appcall(void);
 #define UIP_APPCALL tcp_demo_appcall //定义回调函数为 tcp_demo_appcall 
 #endif
 /////////////////////////////////////TCP SERVER/////////////////////////////////////
-extern u8 tcp_server_databuf[];   		//发送数据缓存	 
-extern u8 tcp_server_sta;				//服务端状态   
+//extern u8 tcp_server_databuf[];   		//发送数据缓存	 
+//extern u8 tcp_server_sta;				//服务端状态   
 //tcp server 函数
 void tcp_server_aborted(void);
 void tcp_server_timedout(void);
@@ -74,6 +74,9 @@ extern u8 listen_port_at_tcp_server_mode_ghost[2];//register 120 121
 extern u8 enable_ghost; 
 extern u16 uart_buf_len;
 extern u8 tcp_buf_ready;
+
+void tcp_server_initial(void);
+void tcp_server_config(void);
 
 #endif
 

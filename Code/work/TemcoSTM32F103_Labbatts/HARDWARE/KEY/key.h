@@ -9,11 +9,11 @@
 #define	KEY_3		0X04	//PC2
 #define	KEY_4		0X08	//PC3 
 
-#define	KEY_UP_MASK			(1 << 3)
-#define	KEY_DOWN_MASK		(1 << 2)
-#define	KEY_LEFT_MASK		(1 << 1)
-#define	KEY_RIGHT_MASK		(1 << 0)
-
+#define	KEY_UP_MASK			(1 << 0)
+#define	KEY_DOWN_MASK		(1 << 1)
+#define	KEY_LEFT_MASK		(1 << 3)
+#define	KEY_RIGHT_MASK		(1 << 2)
+							
  
 #define KEY_SPEED_1			(0x0000)
 #define KEY_SPEED_10		(0x0100)

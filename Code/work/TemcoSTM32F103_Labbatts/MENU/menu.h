@@ -42,8 +42,7 @@ struct _DISPLAY_
 	
 };
 
-extern struct _MENU_STATE_ CurrentState;
-extern struct _DISPLAY_ display;
+extern struct _MENU_STATE_ CurrentState; 
 extern u8 in_sub_menu;
 extern u8 value_change;
 extern u8 text[150];

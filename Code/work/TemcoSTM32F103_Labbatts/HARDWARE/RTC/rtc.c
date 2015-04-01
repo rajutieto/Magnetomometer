@@ -4,6 +4,14 @@
 
 	   
 _calendar_obj calendar;//时钟结构体 
+_calendar_obj calendar_ghost;					//日历结构体
+u8 calendar_ghost_enable = 0;
+u8 Rtc_Sec_It;
+//月份数据表											 
+u8 const table_week[12] = {0, 3, 3, 6, 1, 4, 6, 2, 5, 0, 3, 5};	//月修正数据表	  
+//平年的月份日期表
+const u8 mon_table[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
 /*
 void set_clock(u16 divx)
 {
@@ -17,93 +25,29 @@ void set_clock(u16 divx)
 	RTC_WaitForLastTask();	//等待最近一次对RTC寄存器的写操作完成		 									  
 }	   
 */
-
+/*
+ * 函数名：NVIC_Configuration
+ * 描述  ：配置RTC秒中断的主中断优先级为1，次优先级为0
+ * 输入  ：无
+ * 输出  ：无
+ * 调用  ：外部调用
+ */ 
 static void RTC_NVIC_Config(void)
 {	
-//	NVIC_InitTypeDef NVIC_InitStructure;
-//	NVIC_InitStructure.NVIC_IRQChannel = RTC_IRQn;				//RTC全局中断
-//	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;	//先占优先级1位,从优先级3位
-//	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;			//先占优先级0位,从优先级4位
-//	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;				//使能该通道中断
-//	NVIC_Init(&NVIC_InitStructure);								//根据NVIC_InitStruct中指定的参数初始化外设NVIC寄存器
+	NVIC_InitTypeDef NVIC_InitStructure;
+	NVIC_InitStructure.NVIC_IRQChannel = RTC_IRQn;				//RTC全局中断
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;	//先占优先级1位,从优先级3位
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;			//先占优先级0位,从优先级4位
+	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;				//使能该通道中断
+	NVIC_Init(&NVIC_InitStructure);								//根据NVIC_InitStruct中指定的参数初始化外设NVIC寄存器
 }
-
-//实时时钟配置
-//初始化RTC时钟,同时检测时钟是否工作正常
-//BKP->DR1用于保存是否第一次配置的设置
-//返回0:正常
-//其他:错误代码
-
-u8 RTC_Init(void)
-{
-	//检查是不是第一次配置时钟
-	u8 temp = 0;
- 
-	if(BKP_ReadBackupRegister(BKP_DR1) != 0x5050)	//从指定的后备寄存器中读出数据:读出了与写入的指定数据不相乎
-	{	 			
-		RCC_APB1PeriphClockCmd(RCC_APB1Periph_PWR | RCC_APB1Periph_BKP, ENABLE);	//使能PWR和BKP外设时钟   
-		PWR_BackupAccessCmd(ENABLE);												//使能后备寄存器访问 
-		BKP_DeInit();				//复位备份区域 	
-		RCC_LSEConfig(RCC_LSE_ON);	//设置外部低速晶振(LSE),使用外设低速晶振
-		while(RCC_GetFlagStatus(RCC_FLAG_LSERDY) == RESET)	//检查指定的RCC标志位设置与否,等待低速晶振就绪
-		{
-			temp++;
-			delay_ms(10);
-		}
-		if(temp >= 250)return 1;	//初始化时钟失败,晶振有问题
-	    
-		RCC_RTCCLKConfig(RCC_RTCCLKSource_LSE);	//设置RTC时钟(RTCCLK),选择LSE作为RTC时钟    
-		RCC_RTCCLKCmd(ENABLE);					//使能RTC时钟  
-		RTC_WaitForLastTask();					//等待最近一次对RTC寄存器的写操作完成
-		RTC_WaitForSynchro();					//等待RTC寄存器同步  
-		RTC_ITConfig(RTC_IT_SEC, ENABLE);		//使能RTC秒中断
-		RTC_WaitForLastTask();					//等待最近一次对RTC寄存器的写操作完成
-		RTC_EnterConfigMode();					//允许配置	
-		RTC_SetPrescaler(32767);				//设置RTC预分频的值
-		RTC_WaitForLastTask();					//等待最近一次对RTC寄存器的写操作完成
-		RTC_Set(2014, 8, 27, 15, 42, 55);		//设置时间	
-		RTC_ExitConfigMode(); 					//退出配置模式  
-		BKP_WriteBackupRegister(BKP_DR1, 0X5050);//向指定的后备寄存器中写入用户程序数据
-	}
-	else//系统继续计时
-	{
-
-		RTC_WaitForSynchro();					//等待最近一次对RTC寄存器的写操作完成
-		RTC_ITConfig(RTC_IT_SEC, ENABLE);		//使能RTC秒中断
-		RTC_WaitForLastTask();					//等待最近一次对RTC寄存器的写操作完成
-	}
-	
-	RTC_NVIC_Config();							//RCT中断分组设置		    				     
-	RTC_Get();									//更新时间	
-	return 0;
-}
-
-//RTC时钟中断
-//每秒触发一次  
-//extern u16 tcnt; 
-//void RTC_IRQHandler(void)
-//{		 
-//	if(RTC_GetITStatus(RTC_IT_SEC) != RESET)	//秒钟中断
-//	{							
-//		RTC_Get();//更新时间   
-// 	}
-//	
-//	if(RTC_GetITStatus(RTC_IT_ALR)!= RESET)		//闹钟中断
-//	{
-//		RTC_ClearITPendingBit(RTC_IT_ALR);		//清闹钟中断	  	   
-//  	}
-//	
-//	RTC_ClearITPendingBit(RTC_IT_SEC|RTC_IT_OW);//清闹钟中断
-//	RTC_WaitForLastTask();	  	    						 	   	 
-//}
-
 //判断是否是闰年函数
 //月份   1  2  3  4  5  6  7  8  9  10 11 12
 //闰年   31 29 31 30 31 30 31 31 30 31 30 31
 //非闰年 31 28 31 30 31 30 31 31 30 31 30 31
 //输入:年份
 //输出:该年份是不是闰年.1,是.0,不是
-u8 Is_Leap_Year(u16 year)
+static u8 Is_Leap_Year(u16 year)
 {			  
 	if(year % 4 == 0)				//必须能被4整除
 	{ 
@@ -125,20 +69,50 @@ u8 Is_Leap_Year(u16 year)
 	}		
 }
 
+
+//获得现在是星期几
+//功能描述:输入公历日期得到星期(只允许1901-2099年)
+//输入参数：公历年月日 
+//返回值：星期号																						 
+static u8 RTC_Get_Week(u16 year, u8 month, u8 day)
+{	
+	u16 temp2;
+	u8 yearH, yearL;
+	
+	yearH = year / 100;
+	yearL = year % 100;
+	  
+	if(yearH > 19)	// 如果为21世纪,年份数加100
+		yearL += 100;
+	
+	// 所过闰年数只算1900年之后的  
+	temp2 = yearL + yearL / 4;
+	temp2 = temp2 % 7; 
+	temp2 = temp2 + day + table_week[month - 1];
+	
+	if(yearL % 4 == 0 && month < 3)
+		temp2--;
+	
+	return(temp2 % 7);
+}	
 //设置时钟
 //把输入的时钟转换为秒钟
 //以1970年1月1日为基准
 //1970~2099年为合法年份
 //返回值:0,成功;其他:错误代码.
-//月份数据表											 
-u8 const table_week[12] = {0, 3, 3, 6, 1, 4, 6, 2, 5, 0, 3, 5};	//月修正数据表	  
-//平年的月份日期表
-const u8 mon_table[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-u8 RTC_Set(u16 syear, u8 smon, u8 sday, u8 hour, u8 min, u8 sec)
+static u8 RTC_Set(u16 syear, u8 smon, u8 sday, u8 hour, u8 min, u8 sec)
 {
 	u16 t;
 	u32 seccount = 0;
-	if(syear < 1970 || syear > 2099)return 1;	   
+	
+	if(syear < 1970 || syear > 2099)return 1;			//year range
+	if((smon > 12)||(smon < 1)) 	return 1;			//month reange
+	if(sday > mon_table[smon - 1]) 	sday = mon_table[smon - 1];		//day range
+	if(((Is_Leap_Year(t)&&(smon - 1)) == 1) &&(sday > 29)) sday = 29;
+	if(sday < 1)  	return 1;										
+	if(hour >= 24) 	return 1;							//hour range
+	if(min >= 60)  	return 1;							//min range
+	if(sec >= 60)  	return 1;							//second range
 	
 	for(t = 1970; t < syear; t++)				//把所有年份的秒钟相加
 	{
@@ -154,7 +128,9 @@ u8 RTC_Set(u16 syear, u8 smon, u8 sday, u8 hour, u8 min, u8 sec)
 		seccount += (u32)mon_table[t] * 86400;	//月份秒钟数相加
 		if(Is_Leap_Year(syear) && t == 1)
 			seccount += 86400;					//闰年2月份增加一天的秒钟数	   
-	}
+	} 
+	
+		
 	seccount += (u32)(sday - 1) * 86400;		//把前面日期的秒钟数相加 
 	seccount += (u32)hour * 3600;					//小时秒钟数
     seccount += (u32)min * 60;					//分钟秒钟数
@@ -162,15 +138,19 @@ u8 RTC_Set(u16 syear, u8 smon, u8 sday, u8 hour, u8 min, u8 sec)
 
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_PWR | RCC_APB1Periph_BKP, ENABLE);//使能PWR和BKP外设时钟  
 	PWR_BackupAccessCmd(ENABLE);	//使能RTC和后备寄存器访问 
+	/* Wait until last write operation on RTC registers has finished */
+	RTC_WaitForLastTask();
+	
 	RTC_SetCounter(seccount);		//设置RTC计数器的值
 
 	RTC_WaitForLastTask();			//等待最近一次对RTC寄存器的写操作完成  	
 	return 0;	    
 }
 
+
 //得到当前的时间
 //返回值:0,成功;其他:错误代码.
-u8 RTC_Get(void)
+static u8 RTC_Get(void)
 {
 	static u16 daycnt = 0;
 	u32 timecount = 0; 
@@ -234,31 +214,117 @@ u8 RTC_Get(void)
 	calendar.week = RTC_Get_Week(calendar.w_year, calendar.w_month, calendar.w_date);	//获取星期   
 	return 0;
 }
+		  
 
-//获得现在是星期几
-//功能描述:输入公历日期得到星期(只允许1901-2099年)
-//输入参数：公历年月日 
-//返回值：星期号																						 
-u8 RTC_Get_Week(u16 year, u8 month, u8 day)
-{	
-	u16 temp2;
-	u8 yearH, yearL;
+//实时时钟配置
+//初始化RTC时钟,同时检测时钟是否工作正常
+//BKP->DR1用于保存是否第一次配置的设置
+//返回0:正常
+//其他:错误代码
+
+u8 RTC_Init(void)
+{
+	//检查是不是第一次配置时钟
+	u8 temp = 0;
+	RTC_NVIC_Config();							//RCT中断分组设置	
+	if(BKP_ReadBackupRegister(BKP_DR1) != 0x5050)	//从指定的后备寄存器中读出数据:读出了与写入的指定数据不相乎
+	{	
+		/* Enable PWR and BKP clocks */ 			
+		RCC_APB1PeriphClockCmd(RCC_APB1Periph_PWR | RCC_APB1Periph_BKP, ENABLE);	//使能PWR和BKP外设时钟   
+		/* Allow access to BKP Domain */
+		PWR_BackupAccessCmd(ENABLE);												//使能后备寄存器访问 
+		/* Reset Backup Domain */
+		BKP_DeInit();				//复位备份区域 	
+		/* Enable LSE */
+		RCC_LSEConfig(RCC_LSE_ON);	//设置外部低速晶振(LSE),使用外设低速晶振
+		/* Wait till LSE is ready */
+		while(RCC_GetFlagStatus(RCC_FLAG_LSERDY) == RESET)	//检查指定的RCC标志位设置与否,等待低速晶振就绪
+		{
+			temp++;
+			delay_ms(10);
+		}
+//		if(temp >= 250)return 1;	//初始化时钟失败,晶振有问题
+	    /* Select LSE as RTC Clock Source */
+		RCC_RTCCLKConfig(RCC_RTCCLKSource_LSE);	//设置RTC时钟(RTCCLK),选择LSE作为RTC时钟    
+		/* Enable RTC Clock */
+		RCC_RTCCLKCmd(ENABLE);					//使能RTC时钟  
+//		RTC_WaitForLastTask();					//等待最近一次对RTC寄存器的写操作完成
+		/* Wait for RTC registers synchronization */
+		RTC_WaitForSynchro();					//等待RTC寄存器同步  
+		/* Wait until last write operation on RTC registers has finished */
+		RTC_WaitForLastTask();
+		/* Enable the RTC Second */
+		RTC_ITConfig(RTC_IT_SEC, ENABLE);		//使能RTC秒中断
+		/* Wait until last write operation on RTC registers has finished */
+		RTC_WaitForLastTask();					//等待最近一次对RTC寄存器的写操作完成
+		
+//		RTC_EnterConfigMode();					//允许配置	
+//		RTC_SetPrescaler(32767);				//设置RTC预分频的值
+		/* Set RTC prescaler: set RTC period to 1sec */
+	    RTC_SetPrescaler(32767); /* RTC period = RTCCLK/RTC_PR = (32.768 KHz)/(32767+1) */
+	    /* Wait until last write operation on RTC registers has finished */
+		RTC_WaitForLastTask();					//等待最近一次对RTC寄存器的写操作完成
+		
+		RTC_Set(2014, 8, 27, 15, 42, 55);		//设置时间	
+		
+//		RTC_ExitConfigMode(); 					//退出配置模式  
+		
+		BKP_WriteBackupRegister(BKP_DR1, 0X5050);//向指定的后备寄存器中写入用户程序数据
+	}
+	else//系统继续计时
+	{
+
+		RTC_WaitForSynchro();					//等待最近一次对RTC寄存器的写操作完成
+		RTC_ITConfig(RTC_IT_SEC, ENABLE);		//使能RTC秒中断
+		RTC_WaitForLastTask();					//等待最近一次对RTC寄存器的写操作完成
+	}
+	/* Clear reset flags */
+	RCC_ClearFlag();	    				     
+	RTC_Get();									//更新时间	
+	return 0;
+}
+/*
+ * 函数名：Time_Adjust
+ * 描述  ：时间调节
+ * 输入  ：无
+ * 输出  ：无
+ * 调用  ：外部调用
+ */
+u8 Time_Adjust(void)
+{  
+//	RCC_APB1PeriphClockCmd(RCC_APB1Periph_PWR | RCC_APB1Periph_BKP, ENABLE);	//使能PWR和BKP外设时钟   
+//		/* Allow access to BKP Domain */
+//	PWR_BackupAccessCmd(ENABLE);												//使能后备寄存器访问 
 	
-	yearH = year / 100;
-	yearL = year % 100;
-	  
-	if(yearH > 19)	// 如果为21世纪,年份数加100
-		yearL += 100;
+	return RTC_Set(calendar_ghost.w_year,	calendar_ghost.w_month,	calendar_ghost.w_date,\
+					calendar_ghost.hour,	calendar_ghost.min,		calendar_ghost.sec);
+//	RCC_ClearFlag();
 	
-	// 所过闰年数只算1900年之后的  
-	temp2 = yearL + yearL / 4;
-	temp2 = temp2 % 7; 
-	temp2 = temp2 + day + table_week[month - 1];
+}
+//RTC时钟中断
+//每秒触发一次  
+extern u16 tcnt; 
+void RTC_IRQHandler(void)
+{		 
+	if(RTC_GetITStatus(RTC_IT_SEC) != RESET)	//秒钟中断
+	{							
+		RTC_Get();//更新时间  
+		if(Rtc_Sec_It == 0)
+			Rtc_Sec_It = 1;
+		else
+			Rtc_Sec_It = 0;
+ 	}
 	
-	if(yearL % 4 == 0 && month < 3)
-		temp2--;
+	if(RTC_GetITStatus(RTC_IT_ALR)!= RESET)		//闹钟中断
+	{
+		RTC_ClearITPendingBit(RTC_IT_ALR);		//清闹钟中断	  	   
+  	}
 	
-	return(temp2 % 7);
-}			  
+	RTC_ClearITPendingBit(RTC_IT_SEC|RTC_IT_OW);//清闹钟中断
+	RTC_WaitForLastTask();	
+	
+	 
+}
+
 
  

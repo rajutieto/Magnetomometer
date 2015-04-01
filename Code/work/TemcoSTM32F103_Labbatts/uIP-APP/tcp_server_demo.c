@@ -4,11 +4,12 @@
 #include <stdio.h>
 #include "stm32f10x.h"
 #include "led.h"
-#include "RM3100.h"
+#include "rm3100.h"
+#include "24cxx.h"
+#include "modbus.h"
 
-u8 send_flag = 0; 
-u16 uart_buf_len;
-u8 tcp_buf_ready;
+
+
 
 u8   mac_address[6];//registers: 100 101 102 103 104 105
 u8   ip_mode = 0;//register: 106, 0 = static, 1 = DHCP
@@ -26,11 +27,52 @@ u8   tcp_server_enable_ghost = 0;//registers 119
 u8   listen_port_at_tcp_server_mode_ghost[2] = {0, 0};//register 120 121
 u8   enable_ghost = 0;
 
-u8 tcp_server_databuf[1024];   	//发送数据缓存	  
-u16 tcp_buf_len;
-u8 tcp_server_sta;				//服务端状态
 
- 	   
+static u8 send_flag = 0; 
+static u8 tcp_server_databuf[1024];   	//发送数据缓存	  
+static u16 tcp_buf_len;
+static u8 tcp_server_sta;				//服务端状态
+u16 uart_buf_len;
+u8 tcp_buf_ready;
+ 
+static void tcp_para_read(void)
+{
+	ip_mode_ghost = AT24CXX_ReadOneByte(EEP_IP_MODE);
+	AT24CXX_Read(EEP_MAC_ADDRESS,mac_address,6); 
+	AT24CXX_Read(EEP_IP_ADDRESS ,ip_address_ghost,4); 
+	AT24CXX_Read(EEP_SUBNET_MASK_ADDRESS,subnet_mask_address_ghost,4); 
+	AT24CXX_Read(EEP_GATEWAY_ADDRESS,gateway_address_ghost,4);
+	AT24CXX_Read(EEP_TCP_PORT,listen_port_at_tcp_server_mode_ghost,2);  							
+}
+static void tcp_para_set(void)
+{
+	AT24CXX_WriteOneByte(EEP_IP_MODE,ip_mode_ghost);
+	AT24CXX_Write(EEP_MAC_ADDRESS,mac_address,6); 
+	AT24CXX_Write(EEP_IP_ADDRESS ,ip_address_ghost,4); 
+	AT24CXX_Write(EEP_SUBNET_MASK_ADDRESS,subnet_mask_address_ghost,4); 
+	AT24CXX_Write(EEP_GATEWAY_ADDRESS,gateway_address_ghost,4);
+	AT24CXX_Write(EEP_TCP_PORT,listen_port_at_tcp_server_mode_ghost,2);  							
+}
+void tcp_server_initial(void)
+{
+	tcp_para_read();
+	ip_mode = ip_mode_ghost;
+	memcpy(ip_address,ip_address_ghost,4);
+	memcpy(subnet_mask_address,subnet_mask_address_ghost,4);
+	memcpy(gateway_address,gateway_address_ghost,4);
+	memcpy(listen_port_at_tcp_server_mode,listen_port_at_tcp_server_mode_ghost,2);
+	enable_ghost = DISABLE;
+}
+void tcp_server_config(void)
+{
+	ip_mode = ip_mode_ghost;
+	memcpy(ip_address,ip_address_ghost,4);
+	memcpy(subnet_mask_address,subnet_mask_address_ghost,4); 
+	memcpy(gateway_address,gateway_address_ghost,4);
+	memcpy(listen_port_at_tcp_server_mode,listen_port_at_tcp_server_mode_ghost,2);
+	tcp_para_set();
+}
+
 //这是一个TCP 服务器应用回调函数。
 //该函数通过UIP_APPCALL(tcp_demo_appcall)调用,实现Web Server的功能.
 //当uip事件发生时，UIP_APPCALL函数会被调用,根据所属端口(1200),确定是否执行该函数。
@@ -83,8 +125,8 @@ void tcp_server_demo_appcall(void)
 				else
 					temp = uart_buf_len;
 				
-				tcp_buf_len = temp*PRINT_BUF_SIZE; 
-				memcpy(tcp_server_databuf,(u8*)tcp_buf,tcp_buf_len);	
+				tcp_buf_len = temp*PNI_BUF_SIZE; 
+				memcpy(tcp_server_databuf,(u8*)TCP_Buffer,tcp_buf_len);	
 				
 				uart_buf_len -=temp;
 				if(uart_buf_len == 0)
@@ -92,7 +134,7 @@ void tcp_server_demo_appcall(void)
 					tcp_buf_ready =0;
 					send_flag = 0;
 				}
-				memcpy(tcp_buf,&tcp_buf[temp],uart_buf_len*PRINT_BUF_SIZE);
+				memcpy(TCP_Buffer,&TCP_Buffer[temp],uart_buf_len*PNI_BUF_SIZE);
 				
 				s->textptr = tcp_server_databuf;
 				s->textlen =tcp_buf_len;//strlen((const char*)tcp_server_databuf);

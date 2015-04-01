@@ -5,6 +5,8 @@
 #include "../key/key.h"
 #include "delay.h"
 #include "tcp_demo.h"
+#include "queue.h"
+extern xQueueHandle qKey;
 u8 text[150];
 u8 menu_system_start = FALSE;
 u32 menu_block_timer_start, menu_block_timer_end;
@@ -75,15 +77,7 @@ struct _MENU_STATE_ const code StateArray[MenuEnd] =
 void show_system_info(void)
 {
 
-			display.x1 = 0;
-			display.x2 = 0;
-			display.y1 = 0;
-			display.y2 = 0;
-			display.z1 = 0;
-			display.z2 = 0;  
-			display.left_result  = 0;
-			display.right_result = 0;
-			display.triggle_number = 0;
+			 
 	
 	sprintf((char *)text, "IP:   %u.%u.%u.%u", (u16)ip_address[0], (u16)ip_address[1], (u16)ip_address[2], (u16)ip_address[3]);
 	Lcd_Show_String(0, 0, DISP_NOR, (char *)text);
@@ -104,7 +98,6 @@ void show_system_info(void)
 	
 } 
 
-
 void update_menu_state(u8 MenuId)
 {
 //	if(MenuId == MenuIdle)
@@ -122,12 +115,12 @@ void update_menu_state(u8 MenuId)
 }
 void menu_init(void)
 {
-//	u16 key_temp;
+	u16 key_temp;
 	// clear the key events which happened within the menu init routine
-//	while(cQueueReceive(qKey, &key_temp, 0) == pdTRUE)
-//	{
-//		watchdog_reset();
-//	}
+	while(xQueueReceive(qKey, &key_temp, 0) == pdTRUE)
+	{
+		;//watchdog_reset();
+	}
 
 	menu_system_start = TRUE;
 	update_menu_state(MenuIdle);
@@ -150,22 +143,22 @@ void menu_init(void)
 	while(1)
 	{
 //		vTaskDelay(xDelayPeriod);
-		if(global_key != KEY_NON)
-		{
-			key_temp = global_key;
-			global_key = KEY_NON;
-
-			CurrentState.KeyCope(key_temp);
-			if(CurrentState.BlockTime)
-				menu_block_timer_start = xTaskGetTickCount();	
-		}
-
-//		if(cQueueReceive(qKey, &key_temp, 20) == pdTRUE)
+//		if(global_key != KEY_NON)
 //		{
+//			key_temp = global_key;
+//			global_key = KEY_NON;
+
 //			CurrentState.KeyCope(key_temp);
 //			if(CurrentState.BlockTime)
-//				menu_block_timer_start = xTaskGetTickCount();
+//				menu_block_timer_start = xTaskGetTickCount();	
 //		}
+
+		if(xQueueReceive(qKey, &key_temp, 20) == pdTRUE)
+		{
+			CurrentState.KeyCope(key_temp);
+			if(CurrentState.BlockTime)
+				menu_block_timer_start = xTaskGetTickCount();
+		}
 
 		if(menu_system_start == TRUE)
 		{		
@@ -178,7 +171,7 @@ void menu_init(void)
 			}
 		}
 		
-		delay_ms(100); 		
+//		delay_ms(100); 		
 	}	
 }
 

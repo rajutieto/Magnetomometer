@@ -15,13 +15,13 @@
 
 #define code 
 
-#define LCD_CS		PBout(9)
-#define LCD_AO		PBout(5)
-#define LCD_BL		PBout(8)
-#define LCD_RST		PBout(4)
-#define LCD_CLK		PBout(3)
-#define LCD_DATA_W	PBout(7)
-#define LCD_DATA_R	PBin(7)
+#define LCD_CS		PDout(14)
+#define LCD_AO		PDout(12)
+#define LCD_BL		PDout(15)
+#define LCD_RST		PDout(13)
+#define LCD_CLK		PDout(11)
+#define LCD_DATA_W	PDout(10)
+#define LCD_DATA_R	PDin(10)
 
 #define BL_ON()		(LCD_BL = 0)
 #define BL_OFF()	(LCD_BL = 1)

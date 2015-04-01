@@ -7,7 +7,10 @@
 #include "rtc.h"
 #include "tcp_demo.h"
 #include "modbus.h"
- 
+#include "24cxx.h"
+#include "usart.h"	 
+u8 pre_alarm_on_time = 2;
+u8 pre_alarm_off_time = 2;
 static uint8 item_index = 0;
 static uint8 pre_item_index = 0;
 
@@ -26,7 +29,7 @@ uint8 subnet_changed_in_menu = 0;
 uint8 gateway_changed_in_menu = 0;
 uint8 port_changed_in_menu = 0;
 
-#define MAX_MISC_ITEMS	15
+#define MAX_MISC_ITEMS	10
 static uint8 const code item_name[MAX_MISC_ITEMS][19] = 
 {
 	"1.Ip mode: ",
@@ -39,11 +42,11 @@ static uint8 const code item_name[MAX_MISC_ITEMS][19] =
 	"8.Baudrate: ",
 	"9.Date: ",
 	"10.Time: ",
-	"11.Alarm on sec: ",
-	"12.Alarm off sec: ",
-	"13.Use password: ",
-	"14.Password: ",
-	"15.Factory reset.",
+//	"11.Alarm on sec: ",
+//	"12.Alarm off sec: ",
+//	"13.Use password: ",
+//	"14.Password: ",
+//	"15.Factory reset.",
 };
  
 static uint8 const code ip_mode_text[2][7] = 
@@ -123,7 +126,7 @@ void Misc_init(void)
 				sprintf((char *)text, "%s%03d.%03d.%03d.%03d", item_name[i + item_index / 5 * 5], (uint16)gateway_address_ghost[0], (uint16)gateway_address_ghost[1], (uint16)gateway_address_ghost[2], (uint16)gateway_address_ghost[3]);
 				break;
 			case 4:
-				sprintf((char *)text, "%s%u", item_name[i + item_index / 5 * 5], ((uint16)listen_port_at_tcp_server_mode_ghost[0] << 8) | listen_port_at_tcp_server_mode_ghost[1]);
+				sprintf((char *)text, "%s%u", item_name[i + item_index / 5 * 5], ((uint16)listen_port_at_tcp_server_mode_ghost[1] << 8) | listen_port_at_tcp_server_mode_ghost[0]);
 				break;
 			case 5:	
 				sprintf((char *)text, "%s%s", item_name[i + item_index / 5 * 5], new_ip_status_text[ipconfig_in_menu]);
@@ -135,10 +138,12 @@ void Misc_init(void)
 				sprintf((char *)text, "%s%s", item_name[i + item_index / 5 * 5], baudrate_text[Modbus.baudrate]);
 				break;
 			case 8: // Date
-				sprintf((char *)text, "%s20%02d-%02d-%02d", item_name[i + item_index / 5 * 5], (uint16)Modbus.Time.Clk.year, (uint16)Modbus.Time.Clk.mon, (uint16)Modbus.Time.Clk.day);
+//				memcpy((void *)&calendar_ghost,(void *)&calendar,sizeof(_calendar_obj));
+				sprintf((char *)text, "%s%d-%02d-%02d", item_name[i + item_index / 5 * 5], (uint16)calendar.w_year, (uint16)calendar.w_month, (uint16)calendar.w_date);
 				break;
 			case 9: // Time
-				sprintf((char *)text, "%s%02d:%02d", item_name[i + item_index / 5 * 5], (uint16)Modbus.Time.Clk.hour, (uint16)Modbus.Time.Clk.min);
+//				memcpy((void *)&calendar_ghost,(void *)&calendar,sizeof(_calendar_obj));
+				sprintf((char *)text, "%s%02d:%02d", item_name[i + item_index / 5 * 5], (uint16)calendar.hour, (uint16)calendar.min);
 				break;
 			case 10:	// Ring on time
 				sprintf((char *)text, "%s%u", item_name[i + item_index / 5 * 5], (uint16)pre_alarm_on_time);
@@ -188,7 +193,7 @@ void Misc_display(void)
 					sprintf((char *)text, "%s%03d.%03d.%03d.%03d", item_name[pre_item_index], (uint16)gateway_address_ghost[0], (uint16)gateway_address_ghost[1], (uint16)gateway_address_ghost[2], (uint16)gateway_address_ghost[3]);
 					break;
 				case 4:
-					sprintf((char *)text, "%s%u", item_name[pre_item_index], ((uint16)listen_port_at_tcp_server_mode_ghost[0] << 8) | listen_port_at_tcp_server_mode_ghost[1]);
+					sprintf((char *)text, "%s%u", item_name[pre_item_index], ((uint16)listen_port_at_tcp_server_mode_ghost[1] << 8) | listen_port_at_tcp_server_mode_ghost[0]);
 					break;
 				case 5:
 					sprintf((char *)text, "%s%s", item_name[pre_item_index], new_ip_status_text[ipconfig_in_menu]);
@@ -200,10 +205,10 @@ void Misc_display(void)
 					sprintf((char *)text, "%s%s", item_name[pre_item_index], baudrate_text[Modbus.baudrate]);
 					break;
 				case 8:
-					sprintf((char *)text, "%s20%02d-%02d-%02d", item_name[pre_item_index], (uint16)Modbus.Time.Clk.year, (uint16)Modbus.Time.Clk.mon, (uint16)Modbus.Time.Clk.day);
+					sprintf((char *)text, "%s%d-%02d-%02d", item_name[pre_item_index], (uint16)calendar.w_year, (uint16)calendar.w_month, (uint16)calendar.w_date);
 					break;
 				case 9:
-					sprintf((char *)text, "%s%02d:%02d", item_name[pre_item_index], (uint16)Modbus.Time.Clk.hour, (uint16)Modbus.Time.Clk.min);
+					sprintf((char *)text, "%s%02d:%02d", item_name[pre_item_index], (uint16)calendar.hour, (uint16)calendar.min);
 					break;
 				case 10:
 					sprintf((char *)text, "%s%u", item_name[pre_item_index], (uint16)pre_alarm_on_time);
@@ -239,7 +244,7 @@ void Misc_display(void)
 					sprintf((char *)text, "%s%03d.%03d.%03d.%03d", item_name[item_index], (uint16)gateway_address_ghost[0], (uint16)gateway_address_ghost[1], (uint16)gateway_address_ghost[2], (uint16)gateway_address_ghost[3]);
 					break;
 				case 4:
-					sprintf((char *)text, "%s%u", item_name[item_index], ((uint16)listen_port_at_tcp_server_mode_ghost[0] << 8) | listen_port_at_tcp_server_mode_ghost[1]);
+					sprintf((char *)text, "%s%u", item_name[item_index], ((uint16)listen_port_at_tcp_server_mode_ghost[1] << 8) | listen_port_at_tcp_server_mode_ghost[0]);
 					break;
 				case 5:
 					sprintf((char *)text, "%s%s", item_name[item_index], new_ip_status_text[ipconfig_in_menu]);
@@ -251,10 +256,10 @@ void Misc_display(void)
 					sprintf((char *)text, "%s%s", item_name[item_index], baudrate_text[Modbus.baudrate]);
 					break;
 				case 8:
-					sprintf((char *)text, "%s20%02d-%02d-%02d", item_name[item_index], (uint16)Modbus.Time.Clk.year, (uint16)Modbus.Time.Clk.mon, (uint16)Modbus.Time.Clk.day);
+					sprintf((char *)text, "%s%d-%02d-%02d", item_name[item_index], (uint16)calendar.w_year, (uint16)calendar.w_month, (uint16)calendar.w_date);
 					break;
 				case 9:
-					sprintf((char *)text, "%s%02d:%02d", item_name[item_index], (uint16)Modbus.Time.Clk.hour, (uint16)Modbus.Time.Clk.min);
+					sprintf((char *)text, "%s%02d:%02d", item_name[item_index], (uint16)calendar.hour, (uint16)calendar.min);
 					break;
 				case 10:
 					sprintf((char *)text, "%s%u", item_name[item_index], (uint16)pre_alarm_on_time);
@@ -287,7 +292,7 @@ void Misc_display(void)
 				else
 					Lcd_Show_String(5 % MAX_ROW, 0, DISP_NOR, (char *)text);
 
-				sprintf((char *)text, "%s%02d:%02d", item_name[9], (uint16)Modbus.Time.Clk.hour, (uint16)Modbus.Time.Clk.min);
+				sprintf((char *)text, "%s%02d:%02d", item_name[9], (uint16)calendar.hour, (uint16)calendar.min);
 				if(item_index == 9)
 					Lcd_Show_String(9 % MAX_ROW, 0, DISP_INV, (char *)text);
 				else
@@ -349,13 +354,22 @@ void Misc_display(void)
 					Lcd_Show_String(item_index % MAX_ROW, 12, DISP_INV, (char *)baudrate_text[set_value]);
 					break;
 				case 8:	// DATE
-					sprintf((char *)text, "%02d", set_value);
+					
 					if(sub_menu_index == 0)
-						Lcd_Show_String(item_index % MAX_ROW, 10, DISP_INV, (char *)text);
+					{
+						sprintf((char *)text, "%04d", set_value);
+						Lcd_Show_String(item_index % MAX_ROW, 8, DISP_INV, (char *)text);
+					}
 					else if(sub_menu_index == 1)
+					{
+						sprintf((char *)text, "%02d", set_value);
 						Lcd_Show_String(item_index % MAX_ROW, 13, DISP_INV, (char *)text);
+					}
 					else if(sub_menu_index == 2)
+					{
+						sprintf((char *)text, "%02d", set_value);
 						Lcd_Show_String(item_index % MAX_ROW, 16, DISP_INV, (char *)text);
+					}
 					break;
 				case 9:	// TIME
 					sprintf((char *)text, "%02d", set_value);
@@ -394,7 +408,7 @@ void Misc_display(void)
 void Misc_keycope(uint16 key_value)
 {
 //	start_back_light(backlight_keep_seconds);
-	switch(key_value /*& KEY_SPEED_MASK*/)
+	switch(key_value & KEY_SPEED_MASK)
 	{
 		case KEY_NON:
 			// do nothing
@@ -426,7 +440,7 @@ void Misc_keycope(uint16 key_value)
 						case 4:
 //							listen_port_at_tcp_server_mode_ghost[0] = listen_port_at_tcp_server_mode[0];
 //							listen_port_at_tcp_server_mode_ghost[1] = listen_port_at_tcp_server_mode[1];
-							sprintf((char *)text, "%s%u", item_name[item_index], ((uint16)listen_port_at_tcp_server_mode_ghost[0] << 8) | listen_port_at_tcp_server_mode_ghost[1]);
+							sprintf((char *)text, "%s%u", item_name[item_index], ((uint16)listen_port_at_tcp_server_mode_ghost[1] << 8) | listen_port_at_tcp_server_mode_ghost[0]);
 							break;
 						case 5:
 							sprintf((char *)text, "%s%s", item_name[item_index], new_ip_status_text[ipconfig_in_menu]);
@@ -438,10 +452,10 @@ void Misc_keycope(uint16 key_value)
 							sprintf((char *)text, "%s%s", item_name[item_index], baudrate_text[Modbus.baudrate]);
 							break;
 						case 8:
-							sprintf((char *)text, "%s20%02d-%02d-%02d", item_name[item_index], (uint16)Modbus.Time.Clk.year, (uint16)Modbus.Time.Clk.mon, (uint16)Modbus.Time.Clk.day);
+							sprintf((char *)text, "%s%d-%02d-%02d", item_name[item_index], (uint16)calendar.w_year, (uint16)calendar.w_month, (uint16)calendar.w_date);
 							break;
 						case 9:
-							sprintf((char *)text, "%s%02d:%02d", item_name[item_index], (uint16)Modbus.Time.Clk.hour, (uint16)Modbus.Time.Clk.min);
+							sprintf((char *)text, "%s%02d:%02d", item_name[item_index], (uint16)calendar.hour, (uint16)calendar.min);
 							break;
 						case 10:
 							sprintf((char *)text, "%s%u", item_name[item_index], (uint16)pre_alarm_on_time);
@@ -653,7 +667,15 @@ void Misc_keycope(uint16 key_value)
 						if(ip_mode_ghost != set_value)
 						{
 							ip_mode_ghost = set_value;
-							enable_ghost = 1; 
+							if(ip_mode_ghost == 0)
+							{
+								AT24CXX_Read(EEP_MAC_ADDRESS,mac_address,6); 
+								AT24CXX_Read(EEP_IP_ADDRESS ,ip_address_ghost,4); 
+								AT24CXX_Read(EEP_SUBNET_MASK_ADDRESS,subnet_mask_address_ghost,4); 
+								AT24CXX_Read(EEP_GATEWAY_ADDRESS,gateway_address_ghost,4);
+								AT24CXX_Read(EEP_TCP_PORT,listen_port_at_tcp_server_mode_ghost,2);  
+							}
+ 							enable_ghost = 1; 
 						}
 
 						sprintf((char *)text, "%s%s", item_name[item_index], ip_mode_text[ip_mode_ghost]);
@@ -871,7 +893,7 @@ void Misc_keycope(uint16 key_value)
 					{
 						sprintf((char *)text, "%s", item_name[item_index]);
 						Lcd_Show_String(item_index % MAX_ROW, 0, DISP_NOR, (char *)text);
-						set_value = ((uint16)listen_port_at_tcp_server_mode_ghost[0] << 8) | listen_port_at_tcp_server_mode_ghost[1];
+						set_value = ((uint16)listen_port_at_tcp_server_mode_ghost[1] << 8) | listen_port_at_tcp_server_mode_ghost[0];
 						in_sub_menu = TRUE;
 					}
 					else
@@ -879,8 +901,8 @@ void Misc_keycope(uint16 key_value)
 						sprintf((char *)text, "%s%u", item_name[item_index], set_value);
 						Lcd_Show_String(item_index % MAX_ROW, 0, DISP_INV, (char *)text);
 
-						listen_port_at_tcp_server_mode_ghost[0] = (uint8)(set_value >> 8);
-						listen_port_at_tcp_server_mode_ghost[1] = (uint8)set_value;	
+						listen_port_at_tcp_server_mode_ghost[1] = (uint8)(set_value >> 8);
+						listen_port_at_tcp_server_mode_ghost[0] = (uint8)set_value;	
 						if((listen_port_at_tcp_server_mode_ghost[0] != listen_port_at_tcp_server_mode[0]) || (listen_port_at_tcp_server_mode_ghost[1] != listen_port_at_tcp_server_mode[1]))
 							port_changed_in_menu = 1;
 						else
@@ -913,7 +935,7 @@ void Misc_keycope(uint16 key_value)
 						}
 						else if(set_value == IP_ENABLE)
 						{
-							enable_ghost = 1;
+							enable_ghost = ENABLE;
 							in_sub_menu = FALSE;
 						}
 					}
@@ -954,22 +976,23 @@ void Misc_keycope(uint16 key_value)
 						Lcd_Show_String(item_index % MAX_ROW, 0, DISP_INV, (char *)text);
 						in_sub_menu = FALSE;
 
-//						if(Modbus.baudrate)
-//							PCON |= 0x40;
-//						else
-//					 		PCON &= ~0x40;
-//						E2prom_Write_Byte(EEP_BAUDRATE, Modbus.baudrate);
+						if(Modbus.baudrate)
+							uart1_init(19200);
+						else
+					 		uart1_init(9600); 
+							serial_receive_timeout_count = SERIAL_RECEIVE_TIMEOUT;
+						AT24CXX_WriteOneByte(EEP_BAUD_RATE, Modbus.baudrate);
 					}
 					break;
 				case 8: // date
 					if(in_sub_menu == FALSE)
 					{
-						sprintf((char *)text, "%s20%02d-%02d-%02d", item_name[item_index], (uint16)Modbus.Time.Clk.year, (uint16)Modbus.Time.Clk.mon, (uint16)Modbus.Time.Clk.day);
+						sprintf((char *)text, "%s%d-%02d-%02d", item_name[item_index], (uint16)calendar.w_year, (uint16)calendar.w_month, (uint16)calendar.w_date);
 						Lcd_Show_String(item_index % MAX_ROW, 0, DISP_NOR, (char *)text);
-
-						set_value = Modbus.Time.Clk.year;
-						sprintf((char *)text, "%02d", set_value);
-						Lcd_Show_String(item_index % MAX_ROW, 10, DISP_INV, (char *)text);
+						
+						set_value = calendar.w_year;
+						sprintf((char *)text, "%d", set_value);
+						Lcd_Show_String(item_index % MAX_ROW, 8, DISP_INV, (char *)text);
 						in_sub_menu = TRUE;
 						sub_menu_index = 0;
 					}
@@ -977,36 +1000,38 @@ void Misc_keycope(uint16 key_value)
 					{
 						if(sub_menu_index == 0) // year done
 						{
-							Modbus.Time.Clk.year = set_value;	
+							memcpy((void *)&calendar_ghost,(void *)&calendar,sizeof(_calendar_obj));
+							calendar_ghost.w_year = set_value;	
 						//	rtc_set_time(RTC_YEAR, TOBCD(Modbus.Time.Clk.year));
-
-							sprintf((char *)text, "%s20%02d-%02d-%02d", item_name[item_index], (uint16)Modbus.Time.Clk.year, (uint16)Modbus.Time.Clk.mon, (uint16)Modbus.Time.Clk.day);
+							Time_Adjust();
+							sprintf((char *)text, "%s%d-%02d-%02d", item_name[item_index], (uint16)calendar_ghost.w_year, (uint16)calendar_ghost.w_month, (uint16)calendar_ghost.w_date);
 							Lcd_Show_String(item_index % MAX_ROW, 0, DISP_NOR, (char *)text);
 
-							set_value = Modbus.Time.Clk.mon;
+							set_value = calendar.w_month;
 							sprintf((char *)text, "%02d", set_value);
 							Lcd_Show_String(item_index % MAX_ROW, 13, DISP_INV, (char *)text);
-							sub_menu_index = 1;
+							sub_menu_index = 1; 
 						}
 						else if(sub_menu_index == 1) // month done
 						{
-							Modbus.Time.Clk.mon = set_value;	
-						//	rtc_set_time(RTC_MONTH, TOBCD(Modbus.Time.Clk.mon));
-
-							sprintf((char *)text, "%s20%02d-%02d-%02d", item_name[item_index], (uint16)Modbus.Time.Clk.year, (uint16)Modbus.Time.Clk.mon, (uint16)Modbus.Time.Clk.day);
+							memcpy((void *)&calendar_ghost,(void *)&calendar,sizeof(_calendar_obj));
+							calendar_ghost.w_month = set_value;	
+						    Time_Adjust();
+							sprintf((char *)text,"%s%d-%02d-%02d", item_name[item_index], (uint16)calendar_ghost.w_year, (uint16)calendar_ghost.w_month, (uint16)calendar_ghost.w_date);
 							Lcd_Show_String(item_index % MAX_ROW, 0, DISP_NOR, (char *)text);
 
-							set_value = Modbus.Time.Clk.day;
+							set_value = calendar.w_date;
 							sprintf((char *)text, "%02d", set_value);
 							Lcd_Show_String(item_index % MAX_ROW, 16, DISP_INV, (char *)text);
 							sub_menu_index = 2;
 						}
 						else if(sub_menu_index == 2) // day done
 						{
-							Modbus.Time.Clk.day = set_value;	
-						//	rtc_set_time(RTC_DATE, TOBCD(Modbus.Time.Clk.day));
+							memcpy((void *)&calendar_ghost,(void *)&calendar,sizeof(_calendar_obj));
+							calendar_ghost.w_date = set_value;	
+						    Time_Adjust();
 
-							sprintf((char *)text, "%s20%02d-%02d-%02d", item_name[item_index], (uint16)Modbus.Time.Clk.year, (uint16)Modbus.Time.Clk.mon, (uint16)Modbus.Time.Clk.day);
+							sprintf((char *)text, "%s%d-%02d-%02d", item_name[item_index], (uint16)calendar_ghost.w_year, (uint16)calendar_ghost.w_month, (uint16)calendar_ghost.w_date);
 							Lcd_Show_String(item_index % MAX_ROW, 0, DISP_INV, (char *)text);
 
 							in_sub_menu = FALSE;
@@ -1017,10 +1042,10 @@ void Misc_keycope(uint16 key_value)
 				case 9: // time
 					if(in_sub_menu == FALSE)
 					{
-						sprintf((char *)text, "%s%02d:%02d", item_name[item_index], (uint16)Modbus.Time.Clk.hour, (uint16)Modbus.Time.Clk.min);
+						sprintf((char *)text, "%s%02d:%02d", item_name[item_index], (uint16)calendar.hour, (uint16)calendar.min);
 						Lcd_Show_String(item_index % MAX_ROW, 0, DISP_NOR, (char *)text);
 
-						set_value = Modbus.Time.Clk.hour;
+						set_value = calendar.hour;
 						sprintf((char *)text, "%02d", set_value);
 						Lcd_Show_String(item_index % MAX_ROW, 9, DISP_INV, (char *)text);
 						in_sub_menu = TRUE;
@@ -1030,23 +1055,25 @@ void Misc_keycope(uint16 key_value)
 					{
 						if(sub_menu_index == 0) // hour done
 						{
-							Modbus.Time.Clk.hour = set_value;	
-						//	rtc_set_time(RTC_HOUR, TOBCD(Modbus.Time.Clk.hour));
+							memcpy((void *)&calendar_ghost,(void *)&calendar,sizeof(_calendar_obj));
+							calendar_ghost.hour = set_value;	
+						    Time_Adjust();
 
-							sprintf((char *)text, "%s%02d:%02d", item_name[item_index], (uint16)Modbus.Time.Clk.hour, (uint16)Modbus.Time.Clk.min);
+							sprintf((char *)text, "%s%02d:%02d", item_name[item_index], (uint16)calendar_ghost.hour, (uint16)calendar_ghost.min);
 							Lcd_Show_String(item_index % MAX_ROW, 0, DISP_NOR, (char *)text);
 
-							set_value = Modbus.Time.Clk.min;
+							set_value = calendar.min;
 							sprintf((char *)text, "%02d", set_value);
 							Lcd_Show_String(item_index % MAX_ROW, 12, DISP_INV, (char *)text);
 							sub_menu_index = 1;
 						}
 						else if(sub_menu_index == 1) // minute done
 						{
-							Modbus.Time.Clk.min = set_value;	
-						//	rtc_set_time(RTC_MINUTE, TOBCD(Modbus.Time.Clk.min));
+							memcpy((void *)&calendar_ghost,(void *)&calendar,sizeof(_calendar_obj));
+							calendar_ghost.min = set_value;	
+						    Time_Adjust();
 
-							sprintf((char *)text, "%s%02d:%02d", item_name[item_index], (uint16)Modbus.Time.Clk.hour, (uint16)Modbus.Time.Clk.min);
+							sprintf((char *)text, "%s%02d:%02d", item_name[item_index], (uint16)calendar_ghost.hour, (uint16)calendar_ghost.min);
 							Lcd_Show_String(item_index % MAX_ROW, 0, DISP_INV, (char *)text);
 
 							in_sub_menu = FALSE;
@@ -1261,7 +1288,8 @@ void Misc_keycope(uint16 key_value)
 						set_value++;
 						if(sub_menu_index == 0)
 						{
-							set_value %= 100;
+							if(set_value >= 2099)
+								set_value = 2099;
 						}
 						else if(sub_menu_index == 1)
 						{
@@ -1270,7 +1298,7 @@ void Misc_keycope(uint16 key_value)
 						}
 						else if(sub_menu_index == 2)
 						{
-							switch(Modbus.Time.Clk.mon)
+							switch(calendar.w_month)
 							{
 								case 1:
 								case 3:
@@ -1290,7 +1318,7 @@ void Misc_keycope(uint16 key_value)
 										set_value = 1;
 									break;
 								case 2:
-									if(Modbus.Time.Clk.year % 4)
+									if(calendar.w_year % 4)
 									{
 										if(set_value > 29)
 											set_value = 1;
@@ -1422,10 +1450,10 @@ void Misc_keycope(uint16 key_value)
 					case 8:
 						if(sub_menu_index == 0)
 						{
-							if(set_value > 0)
+							if(set_value > 1970)
 								set_value--;
 							else
-								set_value = 99;
+								set_value = 1970;
 						}
 						else if(sub_menu_index == 1)
 						{
@@ -1436,7 +1464,7 @@ void Misc_keycope(uint16 key_value)
 						}
 						else if(sub_menu_index == 2)
 						{
-							switch(Modbus.Time.Clk.mon)
+							switch(calendar.w_month)
 							{
 								case 1:
 								case 3:
@@ -1460,7 +1488,7 @@ void Misc_keycope(uint16 key_value)
 										set_value = 30;
 									break;
 								case 2:
-									if(Modbus.Time.Clk.year % 4)
+									if(calendar.w_year % 4)
 									{
 										if(set_value > 1)
 											set_value--;

@@ -3,8 +3,8 @@
 #ifndef __ENC28J60_H
 #define __ENC28J60_H	  
 
-#define ENC28J60_CS		PAout(4) 	//ENC28J60片选信号
-#define ENC28J60_RST	PEout(1)	//ENC28J60复位信号
+#define ENC28J60_CS		PBout(6) 	//ENC28J60片选信号
+#define ENC28J60_RST	PBout(7)	//ENC28J60复位信号
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // ENC28J60 Control Registers

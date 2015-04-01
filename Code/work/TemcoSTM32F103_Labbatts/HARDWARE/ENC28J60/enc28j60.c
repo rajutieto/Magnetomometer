@@ -10,7 +10,24 @@ static u32 NextPacketPtr;
 //复位ENC28J60
 //包括SPI初始化/IO初始化等
 void ENC28J60_Reset(void)
-{
+{ 
+	GPIO_InitTypeDef GPIO_InitStructure;
+	
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
+	
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6 | GPIO_Pin_7;  //CS = PB6,RST = PB7
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_Init(GPIOB, &GPIO_InitStructure);
+	GPIO_SetBits(GPIOB, GPIO_Pin_6 | GPIO_Pin_7);
+	
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8;  				//INT = PB8
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
+//	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_Init(GPIOB, &GPIO_InitStructure);
+	GPIO_SetBits(GPIOB, GPIO_Pin_8);
+ 	
+/*
 	RCC->APB2ENR |= 1 << 2;     //使能PORTA时钟, CS=PA4
 	RCC->APB2ENR |= 1 << 3;     //使能PORTB时钟, INT=PB13 	    
  	RCC->APB2ENR |= 1 << 6;		//使能PORTE时钟, RST=PE1
@@ -39,7 +56,7 @@ void ENC28J60_Reset(void)
 	GPIOC->CRL &= 0XFFF0FFFF; 
 	GPIOC->CRL |= 0X00030000;	//PC4 推挽 	    
 	GPIOC->ODR |= 1 << 4;     	//PC4 上拉
-	
+*/	
 	TIM6_Int_Init(1000, 719);	//100Khz计数频率，计数到1000为10ms
 	
 	ENC28J60_RST = 0;			//复位ENC28J60
@@ -58,12 +75,12 @@ u8 ENC28J60_Read_Op(u8 op, u8 addr)
 	ENC28J60_CS = 0;
 	
 	dat = op | (addr & ADDR_MASK);
-	SPI1_ReadWriteByte(dat);
-	dat = SPI1_ReadWriteByte(0xFF);
+	SPI3_ReadWriteByte(dat);
+	dat = SPI3_ReadWriteByte(0xFF);
 	
 	//如果是读取MAC/MII寄存器,则第二次读到的数据才是正确的,见手册29页
  	if(addr & 0x80)
-		dat = SPI1_ReadWriteByte(0xFF);
+		dat = SPI3_ReadWriteByte(0xFF);
 	
 	ENC28J60_CS = 1;
 	
@@ -79,8 +96,8 @@ void ENC28J60_Write_Op(u8 op, u8 addr, u8 data)
 	u8 dat = 0;	    
 	ENC28J60_CS = 0;			   
 	dat = op | (addr & ADDR_MASK);
-	SPI1_ReadWriteByte(dat);	  
-	SPI1_ReadWriteByte(data);
+	SPI3_ReadWriteByte(dat);	  
+	SPI3_ReadWriteByte(data);
 	ENC28J60_CS = 1;
 }
 
@@ -90,11 +107,11 @@ void ENC28J60_Write_Op(u8 op, u8 addr, u8 data)
 void ENC28J60_Read_Buf(u32 len, u8* data)
 {
 	ENC28J60_CS = 0;			 
-	SPI1_ReadWriteByte(ENC28J60_READ_BUF_MEM);
+	SPI3_ReadWriteByte(ENC28J60_READ_BUF_MEM);
 	while(len)
 	{
 		len--;			  
-		*data = (u8)SPI1_ReadWriteByte(0);
+		*data = (u8)SPI3_ReadWriteByte(0);
 		data++;
 	}
 	*data = '\0';
@@ -107,11 +124,11 @@ void ENC28J60_Read_Buf(u32 len, u8* data)
 void ENC28J60_Write_Buf(u32 len, u8* data)
 {
 	ENC28J60_CS = 0;			   
-	SPI1_ReadWriteByte(ENC28J60_WRITE_BUF_MEM);		 
+	SPI3_ReadWriteByte(ENC28J60_WRITE_BUF_MEM);		 
 	while(len)
 	{
 		len--;
-		SPI1_ReadWriteByte(*data);
+		SPI3_ReadWriteByte(*data);
 		data++;
 	}
 	ENC28J60_CS = 1;
