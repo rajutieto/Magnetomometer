@@ -488,46 +488,6 @@
             </File>
           </Files>
         </Group>
-        <Group>
-          <GroupName>FIND RESULTANT</GroupName>
-          <Files>
-            <File>
-              <FileName>find_resultant.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\find_resultant\find_resultant.c</FilePath>
-            </File>
-            <File>
-              <FileName>find_resultant_initialize.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\find_resultant\find_resultant_initialize.c</FilePath>
-            </File>
-            <File>
-              <FileName>find_resultant_terminate.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\find_resultant\find_resultant_terminate.c</FilePath>
-            </File>
-            <File>
-              <FileName>main.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\find_resultant\main.c</FilePath>
-            </File>
-            <File>
-              <FileName>rt_nonfinite.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\find_resultant\rt_nonfinite.c</FilePath>
-            </File>
-            <File>
-              <FileName>rtGetInf.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\find_resultant\rtGetInf.c</FilePath>
-            </File>
-            <File>
-              <FileName>rtGetNaN.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\find_resultant\rtGetNaN.c</FilePath>
-            </File>
-          </Files>
-        </Group>
       </Groups>
     </Target>
   </Targets>
