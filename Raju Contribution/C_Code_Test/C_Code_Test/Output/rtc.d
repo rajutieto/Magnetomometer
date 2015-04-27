@@ -1,0 +1,16 @@
+..\output\rtc.o: rtc.c
+..\output\rtc.o: rtc.h
+..\output\rtc.o: ..\CMSIS\stm32f10x.h
+..\output\rtc.o: ..\CMSIS\core_cm3.h
+..\output\rtc.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stdint.h
+..\output\rtc.o: ..\CMSIS\system_stm32f10x.h
+..\output\rtc.o: ..\USER\stm32f10x_conf.h
+..\output\rtc.o: ..\FWlib\inc\stm32f10x_bkp.h
+..\output\rtc.o: ..\CMSIS\stm32f10x.h
+..\output\rtc.o: ..\FWlib\inc\stm32f10x_gpio.h
+..\output\rtc.o: ..\FWlib\inc\stm32f10x_pwr.h
+..\output\rtc.o: ..\FWlib\inc\stm32f10x_rcc.h
+..\output\rtc.o: ..\FWlib\inc\stm32f10x_rtc.h
+..\output\rtc.o: ..\FWlib\inc\stm32f10x_usart.h
+..\output\rtc.o: ..\FWlib\inc\misc.h
+..\output\rtc.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stdio.h

@@ -1,0 +1,8 @@
+echo # Temco_Magnetometer >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git remote add origin https://github.com/rajutieto/Temco_Magnetometer.git
+git push -u origin master
+
+ $ git push --mirror git@github.com:username/project.git
