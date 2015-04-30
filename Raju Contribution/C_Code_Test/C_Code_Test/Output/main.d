@@ -15,14 +15,16 @@
 ..\output\main.o: usart1.h
 ..\output\main.o: C:\Program Files\ARM\ARMCC\Bin\..\include\stdio.h
 ..\output\main.o: C:\Program Files\ARM\ARMCC\Bin\..\include\math.h
-..\output\main.o: ..\filterRollerEffect\rand.h
+..\output\main.o: ..\TEST_CODE\rt_nonfinite.h
 ..\output\main.o: C:\Program Files\ARM\ARMCC\Bin\..\include\stddef.h
+..\output\main.o: ..\TEST_CODE\rtwtypes.h
+..\output\main.o: C:\Program Files\ARM\ARMCC\Bin\..\include\limits.h
+..\output\main.o: ..\adjustRollerData\adjustRollerData.h
 ..\output\main.o: C:\Program Files\ARM\ARMCC\Bin\..\include\stdlib.h
 ..\output\main.o: C:\Program Files\ARM\ARMCC\Bin\..\include\string.h
-..\output\main.o: ..\filterRollerEffect\rtwtypes.h
-..\output\main.o: C:\Program Files\ARM\ARMCC\Bin\..\include\limits.h
-..\output\main.o: ..\filterRollerEffect\filterRollerEffect_types.h
-..\output\main.o: ..\TEST_CODE\rt_nonfinite.h
-..\output\main.o: ..\TEST_CODE\rtwtypes.h
-..\output\main.o: ..\filterRollerEffect\filterRollerEffect.h
-..\output\main.o: ..\filterRollerEffect\filterRollerEffect_initialize.h
+..\output\main.o: ..\adjustRollerData\rt_nonfinite.h
+..\output\main.o: ..\adjustRollerData\rtwtypes.h
+..\output\main.o: ..\adjustRollerData\adjustRollerData_types.h
+..\output\main.o: ..\adjustRollerData\adjustRollerData_initialize.h
+..\output\main.o: ..\adjustRollerData\adjustRollerData_emxutil.h
+..\output\main.o: ..\adjustRollerData\rand.h

@@ -16,7 +16,7 @@
   */
 u8 print_buffer[1000];
 
-real_T resultant[238]={
+const real_T resultant[238]={
 534.114219994188,
 534.114219994188,
 536.519337955306,
@@ -505,7 +505,7 @@ real_T  roller_resultantAdjust[238] = {  //define the input
 int main(void)
 {	 
 	
-	
+	int32_T j;
 	/* USART1 config */	
 	USART1_Config();
 	printf( "\r\n Test1 is Starting...... \r\n" );
@@ -528,8 +528,9 @@ filterRollerEffect(resultant,roller_resultantAdjust,roller_type,roller_removed);
 	//cvVal=findCV(resultant);
 	
 	/*print the result*/	
-	sprintf((char *)print_buffer, "Test = %f",roller_removed[1]);
-	printf("%s\r\n",print_buffer);
+	for (j=0;j<238;j++){
+	printf("\r\nTest = %f",roller_removed[j]);} 
+	
 		while (1)
 	{
 		
