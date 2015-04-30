@@ -20,6 +20,15 @@
 "..\output\rt_nonfinite.o"
 "..\output\rtgetinf.o"
 "..\output\rtgetnan.o"
+"..\output\adjustrollerdata.o"
+"..\output\adjustrollerdata_data.o"
+"..\output\adjustrollerdata_emxutil.o"
+"..\output\adjustrollerdata_initialize.o"
+"..\output\adjustrollerdata_terminate.o"
+"..\output\rand_1.o"
+"..\output\rt_nonfinite_1.o"
+"..\output\rtgetinf_1.o"
+"..\output\rtgetnan_1.o"
 --library_type=microlib --strict --scatter "..\Output\STM32-DEMO.sct"
 --summary_stderr --info summarysizes --map --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
