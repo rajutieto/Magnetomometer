@@ -3,7 +3,7 @@
  *
  * Code generation for function 'adjustRollerData'
  *
- * C source code generated on: Wed Apr 08 23:49:14 2015
+ * C source code generated on: Mon May 04 22:20:39 2015
  *
  */
 
@@ -27,8 +27,8 @@
  *                       long:  32
  *                       native word size:  32
  *   Byte ordering: LittleEndian
- *   Signed integer division rounds to: Undefined
- *   Shift right on a signed integer as arithmetic shift: off
+ *   Signed integer division rounds to: Zero
+ *   Shift right on a signed integer as arithmetic shift: on
  *=======================================================================*/
 
 /*=======================================================================* 

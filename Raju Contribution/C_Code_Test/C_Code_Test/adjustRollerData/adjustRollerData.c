@@ -3,7 +3,7 @@
  *
  * Code generation for function 'adjustRollerData'
  *
- * C source code generated on: Wed Apr 08 23:49:14 2015
+ * C source code generated on: Mon May 04 22:20:38 2015
  *
  */
 
@@ -187,15 +187,20 @@ static void eml_sort(const emxArray_real_T *x, emxArray_real_T *y)
 }
 
 void adjustRollerData(const real_T roller_resultant[205], real_T n, real_T
-                      roller_resultantMat_data[205], int32_T
+                      roller_resultantMat_data[238], int32_T
                       roller_resultantMat_size[1])
 {
   emxArray_real_T *a;
   emxArray_real_T *b_a;
   int32_T loop_ub;
   int32_T i0;
-  roller_resultantMat_size[0] = 205;
-  memset(&roller_resultantMat_data[0], 0, 205U * sizeof(real_T));
+  int32_T i1;
+
+  /*  It appends or delets the roller resultant matrix so that output matrix */
+  /*  size will be equal to roller resultant pre defined data matrix  */
+  /*  roller_resultantMat=zeros(size(roller_resultant)); */
+  roller_resultantMat_size[0] = 238;
+  memset(&roller_resultantMat_data[0], 0, 238U * sizeof(real_T));
   emxInit_real_T(&a, 1);
   emxInit_real_T(&b_a, 1);
   if ((205.0 > n) || (205.0 == n)) {
@@ -213,25 +218,34 @@ void adjustRollerData(const real_T roller_resultant[205], real_T n, real_T
     if (205.0 < n) {
       memcpy(&roller_resultantMat_data[0], &roller_resultant[0], 205U * sizeof
              (real_T));
+      if (206.0 > n) {
+        i0 = 0;
+      } else {
+        i0 = 205;
+      }
+
       b_rand(n - 205.0, a);
-      i0 = b_a->size[0];
+      i1 = b_a->size[0];
       b_a->size[0] = a->size[0];
-      emxEnsureCapacity((emxArray__common *)b_a, i0, (int32_T)sizeof(real_T));
+      emxEnsureCapacity((emxArray__common *)b_a, i1, (int32_T)sizeof(real_T));
       loop_ub = a->size[0];
-      for (i0 = 0; i0 < loop_ub; i0++) {
-        b_a->data[i0] = a->data[i0] * roller_resultant[204];
+      for (i1 = 0; i1 < loop_ub; i1++) {
+        b_a->data[i1] = a->data[i1] * roller_resultant[204];
       }
 
       eml_sort(b_a, a);
       loop_ub = a->size[0];
-      for (i0 = 0; i0 < loop_ub; i0++) {
-        roller_resultantMat_data[i0] = a->data[i0];
+      for (i1 = 0; i1 < loop_ub; i1++) {
+        roller_resultantMat_data[i0 + i1] = a->data[i1];
       }
     }
   }
 
   emxFree_real_T(&b_a);
   emxFree_real_T(&a);
+
+  /*  disp(m); */
+  /*  disp(n); */
 }
 
 /* End of code generation (adjustRollerData.c) */

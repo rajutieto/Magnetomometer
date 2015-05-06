@@ -72,6 +72,8 @@
             <UserProg2Name></UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
+            <nStopB1X>0</nStopB1X>
+            <nStopB2X>0</nStopB2X>
           </BeforeMake>
           <AfterMake>
             <RunUserProg1>0</RunUserProg1>
@@ -119,7 +121,7 @@
             <Oh166RecLen>16</Oh166RecLen>
           </OPTHX>
           <Simulator>
-            <UseSimulator>0</UseSimulator>
+            <UseSimulator>1</UseSimulator>
             <LoadApplicationAtStartup>1</LoadApplicationAtStartup>
             <RunToMain>1</RunToMain>
             <RestoreBreakpoints>1</RestoreBreakpoints>
@@ -128,9 +130,10 @@
             <RestoreFunctions>1</RestoreFunctions>
             <RestoreToolbox>1</RestoreToolbox>
             <LimitSpeedToRealTime>0</LimitSpeedToRealTime>
+            <RestoreSysVw>1</RestoreSysVw>
           </Simulator>
           <Target>
-            <UseTarget>1</UseTarget>
+            <UseTarget>0</UseTarget>
             <LoadApplicationAtStartup>1</LoadApplicationAtStartup>
             <RunToMain>1</RunToMain>
             <RestoreBreakpoints>1</RestoreBreakpoints>
@@ -139,11 +142,10 @@
             <RestoreFunctions>0</RestoreFunctions>
             <RestoreToolbox>1</RestoreToolbox>
             <RestoreTracepoints>0</RestoreTracepoints>
-            <RestoreTracepoints>1</RestoreTracepoints>
-            <RestoreTracepoints>1</RestoreTracepoints>
+            <RestoreSysVw>1</RestoreSysVw>
           </Target>
           <RunDebugAfterBuild>0</RunDebugAfterBuild>
-          <TargetSelection>6</TargetSelection>
+          <TargetSelection>4</TargetSelection>
           <SimDlls>
             <CpuDll></CpuDll>
             <CpuDllArguments></CpuDllArguments>
@@ -167,7 +169,7 @@
             <RunIndependent>0</RunIndependent>
             <UpdateFlashBeforeDebugging>1</UpdateFlashBeforeDebugging>
             <Capability>1</Capability>
-            <DriverSelection>4098</DriverSelection>
+            <DriverSelection>4099</DriverSelection>
           </Flash1>
           <bUseTDR>1</bUseTDR>
           <Flash2>Segger\JL2CM3.dll</Flash2>
@@ -343,7 +345,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>1</Optim>
+            <Optim>4</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>0</OneElfS>
@@ -352,7 +354,7 @@
             <PlainCh>0</PlainCh>
             <Ropi>0</Ropi>
             <Rwpi>0</Rwpi>
-            <wLevel>0</wLevel>
+            <wLevel>2</wLevel>
             <uThumb>0</uThumb>
             <uSurpInc>0</uSurpInc>
             <uC99>0</uC99>
@@ -361,7 +363,7 @@
               <MiscControls></MiscControls>
               <Define>USE_STDPERIPH_DRIVER, STM32F10X_HD</Define>
               <Undefine></Undefine>
-              <IncludePath>..\CMSIS;..\USER;..\FWlib\inc;..\FWlib\src</IncludePath>
+              <IncludePath>..\CMSIS;..\USER;..\FWlib\inc;..\FWlib\src;..\TEST_CODE;..\adjustRollerData</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -429,11 +431,6 @@
               <FileType>1</FileType>
               <FilePath>.\usart1.c</FilePath>
             </File>
-            <File>
-              <FileName>rtc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\rtc.c</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>
@@ -488,6 +485,56 @@
               <FileName>system_stm32f10x.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\CMSIS\system_stm32f10x.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>ADJUST ROLLER DATA</GroupName>
+          <Files>
+            <File>
+              <FileName>adjustRollerData.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\adjustRollerData\adjustRollerData.c</FilePath>
+            </File>
+            <File>
+              <FileName>adjustRollerData_data.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\adjustRollerData\adjustRollerData_data.c</FilePath>
+            </File>
+            <File>
+              <FileName>adjustRollerData_emxutil.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\adjustRollerData\adjustRollerData_emxutil.c</FilePath>
+            </File>
+            <File>
+              <FileName>adjustRollerData_initialize.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\adjustRollerData\adjustRollerData_initialize.c</FilePath>
+            </File>
+            <File>
+              <FileName>adjustRollerData_terminate.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\adjustRollerData\adjustRollerData_terminate.c</FilePath>
+            </File>
+            <File>
+              <FileName>rand.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\adjustRollerData\rand.c</FilePath>
+            </File>
+            <File>
+              <FileName>rt_nonfinite.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\adjustRollerData\rt_nonfinite.c</FilePath>
+            </File>
+            <File>
+              <FileName>rtGetInf.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\adjustRollerData\rtGetInf.c</FilePath>
+            </File>
+            <File>
+              <FileName>rtGetNaN.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\adjustRollerData\rtGetNaN.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -72,8 +72,6 @@
             <UserProg2Name></UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
-            <nStopB1X>0</nStopB1X>
-            <nStopB2X>0</nStopB2X>
           </BeforeMake>
           <AfterMake>
             <RunUserProg1>0</RunUserProg1>
@@ -130,7 +128,6 @@
             <RestoreFunctions>1</RestoreFunctions>
             <RestoreToolbox>1</RestoreToolbox>
             <LimitSpeedToRealTime>0</LimitSpeedToRealTime>
-            <RestoreSysVw>1</RestoreSysVw>
           </Simulator>
           <Target>
             <UseTarget>0</UseTarget>
@@ -142,7 +139,8 @@
             <RestoreFunctions>0</RestoreFunctions>
             <RestoreToolbox>1</RestoreToolbox>
             <RestoreTracepoints>0</RestoreTracepoints>
-            <RestoreSysVw>1</RestoreSysVw>
+            <RestoreTracepoints>1</RestoreTracepoints>
+            <RestoreTracepoints>1</RestoreTracepoints>
           </Target>
           <RunDebugAfterBuild>0</RunDebugAfterBuild>
           <TargetSelection>4</TargetSelection>
@@ -363,7 +361,7 @@
               <MiscControls></MiscControls>
               <Define>USE_STDPERIPH_DRIVER, STM32F10X_HD</Define>
               <Undefine></Undefine>
-              <IncludePath>..\CMSIS;..\USER;..\FWlib\inc;..\FWlib\src;..\TEST_CODE;..\find_resultant</IncludePath>
+              <IncludePath>..\CMSIS;..\USER;..\FWlib\inc;..\FWlib\src;..\TEST_CODE;..\adjustRollerData</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -485,6 +483,56 @@
               <FileName>system_stm32f10x.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\CMSIS\system_stm32f10x.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>ADJUST ROLLER DATA</GroupName>
+          <Files>
+            <File>
+              <FileName>adjustRollerData.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\adjustRollerData\adjustRollerData.c</FilePath>
+            </File>
+            <File>
+              <FileName>adjustRollerData_data.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\adjustRollerData\adjustRollerData_data.c</FilePath>
+            </File>
+            <File>
+              <FileName>adjustRollerData_emxutil.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\adjustRollerData\adjustRollerData_emxutil.c</FilePath>
+            </File>
+            <File>
+              <FileName>adjustRollerData_initialize.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\adjustRollerData\adjustRollerData_initialize.c</FilePath>
+            </File>
+            <File>
+              <FileName>adjustRollerData_terminate.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\adjustRollerData\adjustRollerData_terminate.c</FilePath>
+            </File>
+            <File>
+              <FileName>rand.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\adjustRollerData\rand.c</FilePath>
+            </File>
+            <File>
+              <FileName>rt_nonfinite.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\adjustRollerData\rt_nonfinite.c</FilePath>
+            </File>
+            <File>
+              <FileName>rtGetInf.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\adjustRollerData\rtGetInf.c</FilePath>
+            </File>
+            <File>
+              <FileName>rtGetNaN.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\adjustRollerData\rtGetNaN.c</FilePath>
             </File>
           </Files>
         </Group>

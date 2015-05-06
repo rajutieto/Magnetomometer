@@ -226,13 +226,14 @@ const real_T roller_resultant[205] = {  //define the input
 	
 };
 
-real_T roller_resultantMat_data[205]= { 0.00 };
-int32_T roller_resultantMat_size[2] = { 205, 1 };
+real_T roller_resultantMat_data[238]= { 0.00 };
+int32_T roller_resultantMat_size[2] = { 238, 1 };
 
 int main(void)
 {	 
 	
-	
+	int32_T j;
+	//*** error 65: access violation at 0xFFFFFFFC : no 'read' permission
 	/* USART1 config */	
 	USART1_Config();
 	printf( "\r\n Test1 is Starting...... \r\n" );
@@ -244,7 +245,10 @@ int main(void)
 	
 	adjustRollerData_initialize();
 	adjustRollerData(roller_resultant,238,roller_resultantMat_data,roller_resultantMat_size);
-		
+	
+	for (j=0;j<238;j++){
+	printf("%f\n",roller_resultantMat_data[j]);} 	
+  	
 	
 while (1)
 	{

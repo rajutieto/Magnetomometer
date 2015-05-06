@@ -1,6 +1,6 @@
-..\output\rtgetnan.o: ..\filterRollerEffect\rtGetNaN.c
-..\output\rtgetnan.o: ..\filterRollerEffect\rtGetNaN.h
-..\output\rtgetnan.o: C:\Program Files\ARM\ARMCC\Bin\..\include\stddef.h
-..\output\rtgetnan.o: ..\filterRollerEffect\rtwtypes.h
-..\output\rtgetnan.o: C:\Program Files\ARM\ARMCC\Bin\..\include\limits.h
-..\output\rtgetnan.o: ..\filterRollerEffect\rt_nonfinite.h
+..\output\rtgetnan.o: ..\adjustRollerData\rtGetNaN.c
+..\output\rtgetnan.o: ..\adjustRollerData\rtGetNaN.h
+..\output\rtgetnan.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stddef.h
+..\output\rtgetnan.o: ..\adjustRollerData\rtwtypes.h
+..\output\rtgetnan.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\limits.h
+..\output\rtgetnan.o: ..\adjustRollerData\rt_nonfinite.h

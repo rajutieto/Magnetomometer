@@ -29,7 +29,7 @@ MAKEFILE                  = adjustRollerData_rtw.mk
 COMPUTER                  = PCWIN
 ARCH                      = win32
 MATLAB_ROOT               = C:/PROGRA~1/MATLAB/R2013a
-START_DIR                 = C:/Users/ASADUL~1/DOCUME~1/GitHub/MAGNET~1/MYWORK~1/codegen/lib/ADJUST~1
+START_DIR                 = C:/Users/ASADUL~1/DOCUME~1/GitHub/MAGNET~1/RAJUCO~1/MATLAB~1/codegen/lib/ADJUST~1
 RELATIVE_PATH_TO_ANCHOR   = .
 MATLAB_BIN                = $(MATLAB_ROOT)/bin
 MATLAB_ARCH_BIN           = $(MATLAB_ROOT)/bin/win32
@@ -58,7 +58,7 @@ BUILD_TYPE = "Static Library"
 ## INCLUDE PATHS
 ###########################################################################
 
-INCLUDES_BUILDINFO = -IC:/Users/ASADUL~1/DOCUME~1/GitHub/MAGNET~1/MYWORK~1 -I$(START_DIR) -IC:/Users/ASADUL~1/DOCUME~1/GitHub/MAGNET~1/C_CONV~1 -I$(MATLAB_ROOT)/extern/include -I$(MATLAB_ROOT)/simulink/include -I$(MATLAB_ROOT)/rtw/c/src -I$(MATLAB_ROOT)/rtw/c/src/ext_mode/common -I$(MATLAB_ROOT)/rtw/c/ert
+INCLUDES_BUILDINFO = -IC:/Users/ASADUL~1/DOCUME~1/GitHub/MAGNET~1/RAJUCO~1/MATLAB~1 -I$(START_DIR) -I$(MATLAB_ROOT)/extern/include -I$(MATLAB_ROOT)/simulink/include -I$(MATLAB_ROOT)/rtw/c/src -I$(MATLAB_ROOT)/rtw/c/src/ext_mode/common -I$(MATLAB_ROOT)/rtw/c/ert
 
 INCLUDES = $(INCLUDES_BUILDINFO)
 
@@ -177,7 +177,7 @@ $(PRODUCT) : $(OBJS)
 	$(CC) $(CFLAGS) -Fo"$@" "$<"
 
 
-%.obj : C:/Users/ASADUL~1/DOCUME~1/GitHub/MAGNET~1/MYWORK~1\%.c
+%.obj : C:/Users/ASADUL~1/DOCUME~1/GitHub/MAGNET~1/RAJUCO~1/MATLAB~1\%.c
 	@echo "### Compiling "$<" ..."
 	$(CC) $(CFLAGS) -Fo"$@" "$<"
 

@@ -15,7 +15,7 @@
 <a name="3"><font color="#888888 "><i>    3   </i></font></a><font color="#117755"><I> *</i></font>
 <a name="4"><font color="#888888 "><i>    4   </i></font></a><font color="#117755"><I> * Code generation for function 'adjustRollerData'</i></font>
 <a name="5"><font color="#888888 "><i>    5   </i></font></a><font color="#117755"><I> *</i></font>
-<a name="6"><font color="#888888 "><i>    6   </i></font></a><font color="#117755"><I> * C source code generated on: Wed Apr 08 23:49:14 2015</i></font>
+<a name="6"><font color="#888888 "><i>    6   </i></font></a><font color="#117755"><I> * C source code generated on: Mon May 04 22:20:38 2015</i></font>
 <a name="7"><font color="#888888 "><i>    7   </i></font></a><font color="#117755"><I> *</i></font>
 <a name="8"><font color="#888888 "><i>    8   </i></font></a><font color="#117755"><I> */</i></font>
 <a name="9"><font color="#888888 "><i>    9   </i></font></a>
@@ -199,55 +199,69 @@
 <a name="187"><font color="#888888 "><i>  187   </i></font></a><b>}</b>
 <a name="188"><font color="#888888 "><i>  188   </i></font></a>
 <a name="189"><font color="#888888 "><i>  189   </i></font></a><font color="#112266"><b>void</b></font> <a name="fcn_adjustRollerData">adjustRollerData</a>(<font color="#112266"><b>const</b></font> <a href="rtwtypes_h.html#type_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_real_T');" target="rtwreport_document_frame"><font color="#1122aa">real_T</font></a> roller_resultant[205], <a href="rtwtypes_h.html#type_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_real_T');" target="rtwreport_document_frame"><font color="#1122aa">real_T</font></a> n, <a href="rtwtypes_h.html#type_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_real_T');" target="rtwreport_document_frame"><font color="#1122aa">real_T</font></a>
-<a name="190"><font color="#888888 "><i>  190   </i></font></a>                      roller_resultantMat_data[205], <a href="rtwtypes_h.html#type_int32_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_int32_T');" target="rtwreport_document_frame"><font color="#1122aa">int32_T</font></a>
+<a name="190"><font color="#888888 "><i>  190   </i></font></a>                      roller_resultantMat_data[238], <a href="rtwtypes_h.html#type_int32_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_int32_T');" target="rtwreport_document_frame"><font color="#1122aa">int32_T</font></a>
 <a name="191"><font color="#888888 "><i>  191   </i></font></a>                      roller_resultantMat_size[1])
 <a name="192"><font color="#888888 "><i>  192   </i></font></a><b>{</b>
 <a name="193"><font color="#888888 "><i>  193   </i></font></a>  <a href="adjustRollerData_types_h.html#type_emxArray_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray_real_T');" target="rtwreport_document_frame"><font color="#1122aa">emxArray_real_T</font></a> *a;
 <a name="194"><font color="#888888 "><i>  194   </i></font></a>  <a href="adjustRollerData_types_h.html#type_emxArray_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray_real_T');" target="rtwreport_document_frame"><font color="#1122aa">emxArray_real_T</font></a> *b_a;
 <a name="195"><font color="#888888 "><i>  195   </i></font></a>  <a href="rtwtypes_h.html#type_int32_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_int32_T');" target="rtwreport_document_frame"><font color="#1122aa">int32_T</font></a> loop_ub;
 <a name="196"><font color="#888888 "><i>  196   </i></font></a>  <a href="rtwtypes_h.html#type_int32_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_int32_T');" target="rtwreport_document_frame"><font color="#1122aa">int32_T</font></a> i0;
-<a name="197"><font color="#888888 "><i>  197   </i></font></a>  roller_resultantMat_size[0] = 205;
-<a name="198"><font color="#888888 "><i>  198   </i></font></a>  memset(&amp;roller_resultantMat_data[0], 0, 205U * <font color="#112266"><b>sizeof</b></font>(<a href="rtwtypes_h.html#type_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_real_T');" target="rtwreport_document_frame"><font color="#1122aa">real_T</font></a>));
-<a name="199"><font color="#888888 "><i>  199   </i></font></a>  <a href="adjustRollerData_emxutil_c.html#fcn_emxInit_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxInit_real_T');" target="rtwreport_document_frame"><font color="#1122aa">emxInit_real_T</font></a>(&amp;a, 1);
-<a name="200"><font color="#888888 "><i>  200   </i></font></a>  <a href="adjustRollerData_emxutil_c.html#fcn_emxInit_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxInit_real_T');" target="rtwreport_document_frame"><font color="#1122aa">emxInit_real_T</font></a>(&amp;b_a, 1);
-<a name="201"><font color="#888888 "><i>  201   </i></font></a>  <font color="#112266"><b>if</b></font> ((205.0 &gt; n) || (205.0 == n)) <b>{</b>
-<a name="202"><font color="#888888 "><i>  202   </i></font></a>    <font color="#112266"><b>if</b></font> (1.0 &gt; n) <b>{</b>
-<a name="203"><font color="#888888 "><i>  203   </i></font></a>      loop_ub = 0;
-<a name="204"><font color="#888888 "><i>  204   </i></font></a>    <b>}</b> <font color="#112266"><b>else</b></font> <b>{</b>
-<a name="205"><font color="#888888 "><i>  205   </i></font></a>      loop_ub = (<a href="rtwtypes_h.html#type_int32_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_int32_T');" target="rtwreport_document_frame"><font color="#1122aa">int32_T</font></a>)n;
-<a name="206"><font color="#888888 "><i>  206   </i></font></a>    <b>}</b>
-<a name="207"><font color="#888888 "><i>  207   </i></font></a>
-<a name="208"><font color="#888888 "><i>  208   </i></font></a>    roller_resultantMat_size[0] = loop_ub;
-<a name="209"><font color="#888888 "><i>  209   </i></font></a>    <font color="#112266"><b>for</b></font> (i0 = 0; i0 &lt; loop_ub; i0++) <b>{</b>
-<a name="210"><font color="#888888 "><i>  210   </i></font></a>      roller_resultantMat_data[i0] = roller_resultant[i0];
+<a name="197"><font color="#888888 "><i>  197   </i></font></a>  <a href="rtwtypes_h.html#type_int32_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_int32_T');" target="rtwreport_document_frame"><font color="#1122aa">int32_T</font></a> i1;
+<a name="198"><font color="#888888 "><i>  198   </i></font></a>
+<a name="199"><font color="#888888 "><i>  199   </i></font></a>  <font color="#117755"><i>/*  It appends or delets the roller resultant matrix so that output matrix */</i></font>
+<a name="200"><font color="#888888 "><i>  200   </i></font></a>  <font color="#117755"><i>/*  size will be equal to roller resultant pre defined data matrix  */</i></font>
+<a name="201"><font color="#888888 "><i>  201   </i></font></a>  <font color="#117755"><i>/*  roller_resultantMat=zeros(size(roller_resultant)); */</i></font>
+<a name="202"><font color="#888888 "><i>  202   </i></font></a>  roller_resultantMat_size[0] = 238;
+<a name="203"><font color="#888888 "><i>  203   </i></font></a>  memset(&amp;roller_resultantMat_data[0], 0, 238U * <font color="#112266"><b>sizeof</b></font>(<a href="rtwtypes_h.html#type_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_real_T');" target="rtwreport_document_frame"><font color="#1122aa">real_T</font></a>));
+<a name="204"><font color="#888888 "><i>  204   </i></font></a>  <a href="adjustRollerData_emxutil_c.html#fcn_emxInit_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxInit_real_T');" target="rtwreport_document_frame"><font color="#1122aa">emxInit_real_T</font></a>(&amp;a, 1);
+<a name="205"><font color="#888888 "><i>  205   </i></font></a>  <a href="adjustRollerData_emxutil_c.html#fcn_emxInit_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxInit_real_T');" target="rtwreport_document_frame"><font color="#1122aa">emxInit_real_T</font></a>(&amp;b_a, 1);
+<a name="206"><font color="#888888 "><i>  206   </i></font></a>  <font color="#112266"><b>if</b></font> ((205.0 &gt; n) || (205.0 == n)) <b>{</b>
+<a name="207"><font color="#888888 "><i>  207   </i></font></a>    <font color="#112266"><b>if</b></font> (1.0 &gt; n) <b>{</b>
+<a name="208"><font color="#888888 "><i>  208   </i></font></a>      loop_ub = 0;
+<a name="209"><font color="#888888 "><i>  209   </i></font></a>    <b>}</b> <font color="#112266"><b>else</b></font> <b>{</b>
+<a name="210"><font color="#888888 "><i>  210   </i></font></a>      loop_ub = (<a href="rtwtypes_h.html#type_int32_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_int32_T');" target="rtwreport_document_frame"><font color="#1122aa">int32_T</font></a>)n;
 <a name="211"><font color="#888888 "><i>  211   </i></font></a>    <b>}</b>
-<a name="212"><font color="#888888 "><i>  212   </i></font></a>  <b>}</b> <font color="#112266"><b>else</b></font> <b>{</b>
-<a name="213"><font color="#888888 "><i>  213   </i></font></a>    <font color="#112266"><b>if</b></font> (205.0 &lt; n) <b>{</b>
-<a name="214"><font color="#888888 "><i>  214   </i></font></a>      memcpy(&amp;roller_resultantMat_data[0], &amp;roller_resultant[0], 205U * <font color="#112266"><b>sizeof</b></font>
-<a name="215"><font color="#888888 "><i>  215   </i></font></a>             (<a href="rtwtypes_h.html#type_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_real_T');" target="rtwreport_document_frame"><font color="#1122aa">real_T</font></a>));
-<a name="216"><font color="#888888 "><i>  216   </i></font></a>      <a href="rand_c.html#fcn_b_rand" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_b_rand');" target="rtwreport_document_frame"><font color="#1122aa">b_rand</font></a>(n - 205.0, a);
-<a name="217"><font color="#888888 "><i>  217   </i></font></a>      i0 = b_a-&gt;size[0];
-<a name="218"><font color="#888888 "><i>  218   </i></font></a>      b_a-&gt;size[0] = a-&gt;size[0];
-<a name="219"><font color="#888888 "><i>  219   </i></font></a>      <a href="adjustRollerData_emxutil_c.html#fcn_emxEnsureCapacity" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxEnsureCapacity');" target="rtwreport_document_frame"><font color="#1122aa">emxEnsureCapacity</font></a>((<a href="adjustRollerData_types_h.html#type_emxArray__common" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray__common');" target="rtwreport_document_frame"><font color="#1122aa">emxArray__common</font></a> *)b_a, i0, (<a href="rtwtypes_h.html#type_int32_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_int32_T');" target="rtwreport_document_frame"><font color="#1122aa">int32_T</font></a>)<font color="#112266"><b>sizeof</b></font>(<a href="rtwtypes_h.html#type_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_real_T');" target="rtwreport_document_frame"><font color="#1122aa">real_T</font></a>));
-<a name="220"><font color="#888888 "><i>  220   </i></font></a>      loop_ub = a-&gt;size[0];
-<a name="221"><font color="#888888 "><i>  221   </i></font></a>      <font color="#112266"><b>for</b></font> (i0 = 0; i0 &lt; loop_ub; i0++) <b>{</b>
-<a name="222"><font color="#888888 "><i>  222   </i></font></a>        b_a-&gt;data[i0] = a-&gt;data[i0] * roller_resultant[204];
-<a name="223"><font color="#888888 "><i>  223   </i></font></a>      <b>}</b>
-<a name="224"><font color="#888888 "><i>  224   </i></font></a>
-<a name="225"><font color="#888888 "><i>  225   </i></font></a>      <a href="#fcn_eml_sort" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_eml_sort');" target="rtwreport_document_frame"><font color="#1122aa">eml_sort</font></a>(b_a, a);
-<a name="226"><font color="#888888 "><i>  226   </i></font></a>      loop_ub = a-&gt;size[0];
-<a name="227"><font color="#888888 "><i>  227   </i></font></a>      <font color="#112266"><b>for</b></font> (i0 = 0; i0 &lt; loop_ub; i0++) <b>{</b>
-<a name="228"><font color="#888888 "><i>  228   </i></font></a>        roller_resultantMat_data[i0] = a-&gt;data[i0];
-<a name="229"><font color="#888888 "><i>  229   </i></font></a>      <b>}</b>
-<a name="230"><font color="#888888 "><i>  230   </i></font></a>    <b>}</b>
-<a name="231"><font color="#888888 "><i>  231   </i></font></a>  <b>}</b>
-<a name="232"><font color="#888888 "><i>  232   </i></font></a>
-<a name="233"><font color="#888888 "><i>  233   </i></font></a>  <a href="adjustRollerData_emxutil_c.html#fcn_emxFree_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxFree_real_T');" target="rtwreport_document_frame"><font color="#1122aa">emxFree_real_T</font></a>(&amp;b_a);
-<a name="234"><font color="#888888 "><i>  234   </i></font></a>  <a href="adjustRollerData_emxutil_c.html#fcn_emxFree_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxFree_real_T');" target="rtwreport_document_frame"><font color="#1122aa">emxFree_real_T</font></a>(&amp;a);
-<a name="235"><font color="#888888 "><i>  235   </i></font></a><b>}</b>
-<a name="236"><font color="#888888 "><i>  236   </i></font></a>
-<a name="237"><font color="#888888 "><i>  237   </i></font></a><font color="#117755"><i>/* End of code generation (adjustRollerData.c) */</i></font>
-<a name="238"><font color="#888888 "><i>  238   </i></font></a></pre>
+<a name="212"><font color="#888888 "><i>  212   </i></font></a>
+<a name="213"><font color="#888888 "><i>  213   </i></font></a>    roller_resultantMat_size[0] = loop_ub;
+<a name="214"><font color="#888888 "><i>  214   </i></font></a>    <font color="#112266"><b>for</b></font> (i0 = 0; i0 &lt; loop_ub; i0++) <b>{</b>
+<a name="215"><font color="#888888 "><i>  215   </i></font></a>      roller_resultantMat_data[i0] = roller_resultant[i0];
+<a name="216"><font color="#888888 "><i>  216   </i></font></a>    <b>}</b>
+<a name="217"><font color="#888888 "><i>  217   </i></font></a>  <b>}</b> <font color="#112266"><b>else</b></font> <b>{</b>
+<a name="218"><font color="#888888 "><i>  218   </i></font></a>    <font color="#112266"><b>if</b></font> (205.0 &lt; n) <b>{</b>
+<a name="219"><font color="#888888 "><i>  219   </i></font></a>      memcpy(&amp;roller_resultantMat_data[0], &amp;roller_resultant[0], 205U * <font color="#112266"><b>sizeof</b></font>
+<a name="220"><font color="#888888 "><i>  220   </i></font></a>             (<a href="rtwtypes_h.html#type_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_real_T');" target="rtwreport_document_frame"><font color="#1122aa">real_T</font></a>));
+<a name="221"><font color="#888888 "><i>  221   </i></font></a>      <font color="#112266"><b>if</b></font> (206.0 &gt; n) <b>{</b>
+<a name="222"><font color="#888888 "><i>  222   </i></font></a>        i0 = 0;
+<a name="223"><font color="#888888 "><i>  223   </i></font></a>      <b>}</b> <font color="#112266"><b>else</b></font> <b>{</b>
+<a name="224"><font color="#888888 "><i>  224   </i></font></a>        i0 = 205;
+<a name="225"><font color="#888888 "><i>  225   </i></font></a>      <b>}</b>
+<a name="226"><font color="#888888 "><i>  226   </i></font></a>
+<a name="227"><font color="#888888 "><i>  227   </i></font></a>      <a href="rand_c.html#fcn_b_rand" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_b_rand');" target="rtwreport_document_frame"><font color="#1122aa">b_rand</font></a>(n - 205.0, a);
+<a name="228"><font color="#888888 "><i>  228   </i></font></a>      i1 = b_a-&gt;size[0];
+<a name="229"><font color="#888888 "><i>  229   </i></font></a>      b_a-&gt;size[0] = a-&gt;size[0];
+<a name="230"><font color="#888888 "><i>  230   </i></font></a>      <a href="adjustRollerData_emxutil_c.html#fcn_emxEnsureCapacity" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxEnsureCapacity');" target="rtwreport_document_frame"><font color="#1122aa">emxEnsureCapacity</font></a>((<a href="adjustRollerData_types_h.html#type_emxArray__common" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray__common');" target="rtwreport_document_frame"><font color="#1122aa">emxArray__common</font></a> *)b_a, i1, (<a href="rtwtypes_h.html#type_int32_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_int32_T');" target="rtwreport_document_frame"><font color="#1122aa">int32_T</font></a>)<font color="#112266"><b>sizeof</b></font>(<a href="rtwtypes_h.html#type_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_real_T');" target="rtwreport_document_frame"><font color="#1122aa">real_T</font></a>));
+<a name="231"><font color="#888888 "><i>  231   </i></font></a>      loop_ub = a-&gt;size[0];
+<a name="232"><font color="#888888 "><i>  232   </i></font></a>      <font color="#112266"><b>for</b></font> (i1 = 0; i1 &lt; loop_ub; i1++) <b>{</b>
+<a name="233"><font color="#888888 "><i>  233   </i></font></a>        b_a-&gt;data[i1] = a-&gt;data[i1] * roller_resultant[204];
+<a name="234"><font color="#888888 "><i>  234   </i></font></a>      <b>}</b>
+<a name="235"><font color="#888888 "><i>  235   </i></font></a>
+<a name="236"><font color="#888888 "><i>  236   </i></font></a>      <a href="#fcn_eml_sort" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_eml_sort');" target="rtwreport_document_frame"><font color="#1122aa">eml_sort</font></a>(b_a, a);
+<a name="237"><font color="#888888 "><i>  237   </i></font></a>      loop_ub = a-&gt;size[0];
+<a name="238"><font color="#888888 "><i>  238   </i></font></a>      <font color="#112266"><b>for</b></font> (i1 = 0; i1 &lt; loop_ub; i1++) <b>{</b>
+<a name="239"><font color="#888888 "><i>  239   </i></font></a>        roller_resultantMat_data[i0 + i1] = a-&gt;data[i1];
+<a name="240"><font color="#888888 "><i>  240   </i></font></a>      <b>}</b>
+<a name="241"><font color="#888888 "><i>  241   </i></font></a>    <b>}</b>
+<a name="242"><font color="#888888 "><i>  242   </i></font></a>  <b>}</b>
+<a name="243"><font color="#888888 "><i>  243   </i></font></a>
+<a name="244"><font color="#888888 "><i>  244   </i></font></a>  <a href="adjustRollerData_emxutil_c.html#fcn_emxFree_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxFree_real_T');" target="rtwreport_document_frame"><font color="#1122aa">emxFree_real_T</font></a>(&amp;b_a);
+<a name="245"><font color="#888888 "><i>  245   </i></font></a>  <a href="adjustRollerData_emxutil_c.html#fcn_emxFree_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxFree_real_T');" target="rtwreport_document_frame"><font color="#1122aa">emxFree_real_T</font></a>(&amp;a);
+<a name="246"><font color="#888888 "><i>  246   </i></font></a>
+<a name="247"><font color="#888888 "><i>  247   </i></font></a>  <font color="#117755"><i>/*  disp(m); */</i></font>
+<a name="248"><font color="#888888 "><i>  248   </i></font></a>  <font color="#117755"><i>/*  disp(n); */</i></font>
+<a name="249"><font color="#888888 "><i>  249   </i></font></a><b>}</b>
+<a name="250"><font color="#888888 "><i>  250   </i></font></a>
+<a name="251"><font color="#888888 "><i>  251   </i></font></a><font color="#117755"><i>/* End of code generation (adjustRollerData.c) */</i></font>
+<a name="252"><font color="#888888 "><i>  252   </i></font></a></pre>
 </td></tr></table>
 </p>
 </body>

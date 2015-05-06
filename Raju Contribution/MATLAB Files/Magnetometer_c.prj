@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <deployment-project plugin="plugin.matlabcoder" plugin-version="R2013a">
-  <configuration target="target.matlab.coder" target-name="MEX, C, and C++ Code Generation" name="Magnetometer_c" location="C:\Users\ASADULLAH\Desktop\Backup\Project_GitHub\GitHub\Magnetometer_Odesk\Temco_Magnetometer\MATLAB Files" file="C:\Users\ASADULLAH\Desktop\Backup\Project_GitHub\GitHub\Magnetometer_Odesk\Temco_Magnetometer\MATLAB Files\Magnetometer_c.prj" build-checksum="434657939">
+  <configuration target="target.matlab.coder" target-name="MEX, C, and C++ Code Generation" name="Magnetometer_c" location="C:\Users\ASADULLAH\Documents\GitHub\Magnetomometer\Raju Contribution\MATLAB Files" file="C:\Users\ASADULLAH\Documents\GitHub\Magnetomometer\Raju Contribution\MATLAB Files\Magnetometer_c.prj" build-checksum="4288166863">
     <profile key="profile.mex">
       <param.MergeInstrumentationResults>false</param.MergeInstrumentationResults>
       <param.BuiltInstrumentedMex>false</param.BuiltInstrumentedMex>
@@ -286,20 +286,20 @@
         <param.UseECoderFeatures />
       </unset>
     </profile>
-    <param.outputfile>${PROJECT_ROOT}\codegen\lib\find_resultant\find_resultant.lib</param.outputfile>
+    <param.outputfile>${PROJECT_ROOT}\codegen\lib\adjustRollerData\adjustRollerData.lib</param.outputfile>
     <param.version>R2012a</param.version>
     <param.HasECoderFeatures>true</param.HasECoderFeatures>
     <param.mex.mainhtml />
-    <param.grt.mainhtml>C:\Users\ASADULLAH\Desktop\Backup\Project_GitHub\GitHub\Magnetometer_Odesk\Temco_Magnetometer\MATLAB Files\codegen\lib\find_resultant\html\index.html</param.grt.mainhtml>
+    <param.grt.mainhtml>C:\Users\ASADULLAH\Documents\GitHub\Magnetomometer\Raju Contribution\MATLAB Files\codegen\lib\adjustRollerData\html\index.html</param.grt.mainhtml>
     <param.CallGeneratedCodeFromTest>true</param.CallGeneratedCodeFromTest>
-    <param.DefaultTestFile>${PROJECT_ROOT}\test_convertC.m</param.DefaultTestFile>
+    <param.DefaultTestFile>${PROJECT_ROOT}\adjustRollerData.m</param.DefaultTestFile>
     <param.AutoInferDefaultFile>${PROJECT_ROOT}\test_convertC.m</param.AutoInferDefaultFile>
     <param.AutoInferUseVariableSize>true</param.AutoInferUseVariableSize>
     <param.AutoInferUseUnboundedSize>true</param.AutoInferUseUnboundedSize>
     <param.AutoInferVariableSizeThreshold>1024</param.AutoInferVariableSizeThreshold>
     <param.AutoInferUnboundedSizeThreshold>2048</param.AutoInferUnboundedSizeThreshold>
-    <param.mex.outputfile>find_resultant_mex</param.mex.outputfile>
-    <param.grt.outputfile>find_resultant</param.grt.outputfile>
+    <param.mex.outputfile>adjustRollerData_mex</param.mex.outputfile>
+    <param.grt.outputfile>adjustRollerData</param.grt.outputfile>
     <param.artifact>option.target.artifact.lib</param.artifact>
     <param.FixedPointTypeProposalMode>option.FixedPointTypeProposalMode.ProposeFractionLengths</param.FixedPointTypeProposalMode>
     <param.DefaultProposedFixedPointType>numerictype([],16,12)</param.DefaultProposedFixedPointType>
@@ -382,24 +382,31 @@
       <param.DefaultFixedPointSignedness />
     </unset>
     <fileset.entrypoints>
-      <file value="${PROJECT_ROOT}\find_resultant.m" custom-data-expanded="false">
-        <Inputs fileName="find_resultant.m" functionName="find_resultant">
-          <Input Name="test_obtData">
+      <file value="${PROJECT_ROOT}\adjustRollerData.m" custom-data-expanded="false">
+        <Inputs fileName="adjustRollerData.m" functionName="adjustRollerData">
+          <Input Name="roller_resultant">
             <Class>double</Class>
             <UserDefined>false</UserDefined>
-            <Size>2 x 8</Size>
+            <Size>205 x 1</Size>
+            <Complex>false</Complex>
+          </Input>
+          <Input Name="n">
+            <Class>double</Class>
+            <UserDefined>false</UserDefined>
+            <Size>1 x 1</Size>
             <Complex>false</Complex>
           </Input>
         </Inputs>
       </file>
     </fileset.entrypoints>
     <fileset.testbench>
-      <file>${PROJECT_ROOT}\test_convertC.m</file>
       <file>C:\Users\ASADULLAH\Documents\GitHub\Magnetometer_Odesk\C_conversion\test_convertC.m</file>
+      <file>${PROJECT_ROOT}\adjustRollerData.m</file>
+      <file>${PROJECT_ROOT}\test_convertC.m</file>
     </fileset.testbench>
     <fileset.package />
     <build-deliverables>
-      <file name="find_resultant.lib" location="${PROJECT_ROOT}\codegen\lib\find_resultant" optional="false">C:\Users\ASADULLAH\Desktop\Backup\Project_GitHub\GitHub\Magnetometer_Odesk\Temco_Magnetometer\MATLAB Files\codegen\lib\find_resultant\find_resultant.lib</file>
+      <file name="adjustRollerData.lib" location="${PROJECT_ROOT}\codegen\lib\adjustRollerData" optional="false">C:\Users\ASADULLAH\Documents\GitHub\Magnetomometer\Raju Contribution\MATLAB Files\codegen\lib\adjustRollerData\adjustRollerData.lib</file>
     </build-deliverables>
     <workflow />
     <matlab>
