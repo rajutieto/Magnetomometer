@@ -1,10 +1,10 @@
-..\output\adjustrollerdata_emxutil.o: ..\adjustRollerData\adjustRollerData_emxutil.c
-..\output\adjustrollerdata_emxutil.o: ..\adjustRollerData\rt_nonfinite.h
+..\output\adjustrollerdata_emxutil.o: ..\magnetomometer\adjustRollerData_emxutil.c
+..\output\adjustrollerdata_emxutil.o: ..\magnetomometer\rt_nonfinite.h
 ..\output\adjustrollerdata_emxutil.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stddef.h
-..\output\adjustrollerdata_emxutil.o: ..\adjustRollerData\rtwtypes.h
+..\output\adjustrollerdata_emxutil.o: ..\magnetomometer\rtwtypes.h
 ..\output\adjustrollerdata_emxutil.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\limits.h
-..\output\adjustrollerdata_emxutil.o: ..\adjustRollerData\adjustRollerData.h
+..\output\adjustrollerdata_emxutil.o: ..\magnetomometer\adjustRollerData.h
 ..\output\adjustrollerdata_emxutil.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stdlib.h
 ..\output\adjustrollerdata_emxutil.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\string.h
-..\output\adjustrollerdata_emxutil.o: ..\adjustRollerData\adjustRollerData_types.h
-..\output\adjustrollerdata_emxutil.o: ..\adjustRollerData\adjustRollerData_emxutil.h
+..\output\adjustrollerdata_emxutil.o: ..\magnetomometer\adjustRollerData_types.h
+..\output\adjustrollerdata_emxutil.o: ..\magnetomometer\adjustRollerData_emxutil.h

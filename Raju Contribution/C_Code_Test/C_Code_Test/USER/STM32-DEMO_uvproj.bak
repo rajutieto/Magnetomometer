@@ -72,8 +72,6 @@
             <UserProg2Name></UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
-            <nStopB1X>0</nStopB1X>
-            <nStopB2X>0</nStopB2X>
           </BeforeMake>
           <AfterMake>
             <RunUserProg1>0</RunUserProg1>
@@ -130,7 +128,6 @@
             <RestoreFunctions>1</RestoreFunctions>
             <RestoreToolbox>1</RestoreToolbox>
             <LimitSpeedToRealTime>0</LimitSpeedToRealTime>
-            <RestoreSysVw>1</RestoreSysVw>
           </Simulator>
           <Target>
             <UseTarget>0</UseTarget>
@@ -142,7 +139,8 @@
             <RestoreFunctions>0</RestoreFunctions>
             <RestoreToolbox>1</RestoreToolbox>
             <RestoreTracepoints>0</RestoreTracepoints>
-            <RestoreSysVw>1</RestoreSysVw>
+            <RestoreTracepoints>1</RestoreTracepoints>
+            <RestoreTracepoints>1</RestoreTracepoints>
           </Target>
           <RunDebugAfterBuild>0</RunDebugAfterBuild>
           <TargetSelection>4</TargetSelection>
@@ -363,7 +361,7 @@
               <MiscControls></MiscControls>
               <Define>USE_STDPERIPH_DRIVER, STM32F10X_HD</Define>
               <Undefine></Undefine>
-              <IncludePath>..\CMSIS;..\USER;..\FWlib\inc;..\FWlib\src;..\TEST_CODE;..\adjustRollerData</IncludePath>
+              <IncludePath>..\CMSIS;..\USER;..\FWlib\inc;..\FWlib\src;..\TEST_CODE;..magnetomometer</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -489,52 +487,187 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>ADJUST ROLLER DATA</GroupName>
+          <GroupName>Magnetomometer</GroupName>
           <Files>
             <File>
               <FileName>adjustRollerData.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\adjustRollerData\adjustRollerData.c</FilePath>
+              <FilePath>..\magnetomometer\adjustRollerData.c</FilePath>
             </File>
             <File>
               <FileName>adjustRollerData_data.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\adjustRollerData\adjustRollerData_data.c</FilePath>
+              <FilePath>..\magnetomometer\adjustRollerData_data.c</FilePath>
             </File>
             <File>
               <FileName>adjustRollerData_emxutil.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\adjustRollerData\adjustRollerData_emxutil.c</FilePath>
+              <FilePath>..\magnetomometer\adjustRollerData_emxutil.c</FilePath>
             </File>
             <File>
               <FileName>adjustRollerData_initialize.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\adjustRollerData\adjustRollerData_initialize.c</FilePath>
+              <FilePath>..\magnetomometer\adjustRollerData_initialize.c</FilePath>
             </File>
             <File>
               <FileName>adjustRollerData_terminate.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\adjustRollerData\adjustRollerData_terminate.c</FilePath>
+              <FilePath>..\magnetomometer\adjustRollerData_terminate.c</FilePath>
+            </File>
+            <File>
+              <FileName>checkBox.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\magnetomometer\checkBox.c</FilePath>
+            </File>
+            <File>
+              <FileName>checkBox_initialize.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\magnetomometer\checkBox_initialize.c</FilePath>
+            </File>
+            <File>
+              <FileName>checkBox_terminate.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\magnetomometer\checkBox_terminate.c</FilePath>
+            </File>
+            <File>
+              <FileName>checkLargeNoiseMetal.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\magnetomometer\checkLargeNoiseMetal.c</FilePath>
+            </File>
+            <File>
+              <FileName>checkLargeNoiseMetal_initialize.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\magnetomometer\checkLargeNoiseMetal_initialize.c</FilePath>
+            </File>
+            <File>
+              <FileName>checkLargeNoiseMetal_terminate.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\magnetomometer\checkLargeNoiseMetal_terminate.c</FilePath>
+            </File>
+            <File>
+              <FileName>checkMetal.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\magnetomometer\checkMetal.c</FilePath>
+            </File>
+            <File>
+              <FileName>checkMetal_initialize.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\magnetomometer\checkMetal_initialize.c</FilePath>
+            </File>
+            <File>
+              <FileName>checkMetal_terminate.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\magnetomometer\checkMetal_terminate.c</FilePath>
+            </File>
+            <File>
+              <FileName>dataRead.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\magnetomometer\dataRead.c</FilePath>
+            </File>
+            <File>
+              <FileName>dataRead_emxAPI.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\magnetomometer\dataRead_emxAPI.c</FilePath>
+            </File>
+            <File>
+              <FileName>dataRead_emxutil.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\magnetomometer\dataRead_emxutil.c</FilePath>
+            </File>
+            <File>
+              <FileName>dataRead_initialize.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\magnetomometer\dataRead_initialize.c</FilePath>
+            </File>
+            <File>
+              <FileName>dataRead_terminate.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\magnetomometer\dataRead_terminate.c</FilePath>
+            </File>
+            <File>
+              <FileName>filterRollerEffect.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\magnetomometer\filterRollerEffect.c</FilePath>
+            </File>
+            <File>
+              <FileName>filterRollerEffect_data.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\magnetomometer\filterRollerEffect_data.c</FilePath>
+            </File>
+            <File>
+              <FileName>filterRollerEffect_initialize.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\magnetomometer\filterRollerEffect_initialize.c</FilePath>
+            </File>
+            <File>
+              <FileName>filterRollerEffect_terminate.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\magnetomometer\filterRollerEffect_terminate.c</FilePath>
+            </File>
+            <File>
+              <FileName>find_resultant.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\magnetomometer\find_resultant.c</FilePath>
+            </File>
+            <File>
+              <FileName>find_resultant_initialize.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\magnetomometer\find_resultant_initialize.c</FilePath>
+            </File>
+            <File>
+              <FileName>find_resultant_terminate.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\magnetomometer\find_resultant_terminate.c</FilePath>
+            </File>
+            <File>
+              <FileName>findBoxspeed.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\magnetomometer\findBoxspeed.c</FilePath>
+            </File>
+            <File>
+              <FileName>findBoxspeed_initialize.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\magnetomometer\findBoxspeed_initialize.c</FilePath>
+            </File>
+            <File>
+              <FileName>findBoxspeed_terminate.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\magnetomometer\findBoxspeed_terminate.c</FilePath>
+            </File>
+            <File>
+              <FileName>findCV.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\magnetomometer\findCV.c</FilePath>
+            </File>
+            <File>
+              <FileName>findCV_initialize.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\magnetomometer\findCV_initialize.c</FilePath>
+            </File>
+            <File>
+              <FileName>findCV_terminate.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\magnetomometer\findCV_terminate.c</FilePath>
             </File>
             <File>
               <FileName>rand.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\adjustRollerData\rand.c</FilePath>
+              <FilePath>..\magnetomometer\rand.c</FilePath>
             </File>
             <File>
               <FileName>rt_nonfinite.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\adjustRollerData\rt_nonfinite.c</FilePath>
+              <FilePath>..\magnetomometer\rt_nonfinite.c</FilePath>
             </File>
             <File>
               <FileName>rtGetInf.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\adjustRollerData\rtGetInf.c</FilePath>
+              <FilePath>..\magnetomometer\rtGetInf.c</FilePath>
             </File>
             <File>
               <FileName>rtGetNaN.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\adjustRollerData\rtGetNaN.c</FilePath>
+              <FilePath>..\magnetomometer\rtGetNaN.c</FilePath>
             </File>
           </Files>
         </Group>

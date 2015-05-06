@@ -6,3 +6,6 @@ git remote add origin https://github.com/rajutieto/Temco_Magnetometer.git
 git push -u origin master
 
  $ git push --mirror git@github.com:username/project.git
+
+
+I use Tortoise git for push in github.

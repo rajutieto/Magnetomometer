@@ -1,13 +1,5 @@
-#include "stm32f10x.h"
-#include "usart1.h" 
-#include "math.h"
+#include "allheader.h"
 
-/*	the header of test function  */
-#include "rt_nonfinite.h"
-#include "adjustRollerData.h"
-#include "adjustRollerData_initialize.h"
-#include "adjustRollerData_emxutil.h"
-#include "rand.h"
 
 
 /**
@@ -237,18 +229,14 @@ int main(void)
 	/* USART1 config */	
 	USART1_Config();
 	printf( "\r\n Test1 is Starting...... \r\n" );
-	//printf( "Testing print =%f",test_obtData[1]);
+	
 	
 	/*matlab function test*/
-	sprintf((char *)print_buffer, "Roller Resultant Mat = %f",roller_resultant[1]);
-	printf("%s\r\n",print_buffer);
+	//sprintf((char *)print_buffer, "Roller Resultant Mat = %f",roller_resultant[1]);
+	//printf("%s\r\n",print_buffer);
 	
-	adjustRollerData_initialize();
-	adjustRollerData(roller_resultant,238,roller_resultantMat_data,roller_resultantMat_size);
-	
-	for (j=0;j<238;j++){
-	printf("%f\n",roller_resultantMat_data[j]);} 	
-  	
+		
+	  	
 	
 while (1)
 	{
