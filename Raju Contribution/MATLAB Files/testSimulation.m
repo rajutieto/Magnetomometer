@@ -17,7 +17,7 @@ roller_type = 'conditional'; % 'always' is for always spinning roller &
 
 %% Checking Spreadsheet data..........
 display('Checking Spreadsheet data..........');
-test_obtData=dataRead_Excel(xl_name,sheet_name);
+test_obtData=dataRead_spreadsheet(xl_name,sheet_name);
 speed_box=findBoxspeed(test_obtData);
 box_stat=checkBox(test_obtData,speed_box,variation_box);
 
@@ -37,4 +37,3 @@ legend('Roller Affected','Roller Noise Filtered')
 title('Roller Effect Filtering');
 
 % testPlot();
-

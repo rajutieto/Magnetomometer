@@ -1,4 +1,4 @@
-..\output\main_1.o: ..\adjustRollerData\main.c
+..\output\main_1.o: ..\magnetomometer\main.c
 ..\output\main_1.o: ..\CMSIS\stm32f10x.h
 ..\output\main_1.o: ..\CMSIS\core_cm3.h
 ..\output\main_1.o: C:\Program Files\ARM\ARMCC\Bin\..\include\stdint.h
@@ -15,14 +15,11 @@
 ..\output\main_1.o: ..\USER\usart1.h
 ..\output\main_1.o: C:\Program Files\ARM\ARMCC\Bin\..\include\stdio.h
 ..\output\main_1.o: C:\Program Files\ARM\ARMCC\Bin\..\include\math.h
-..\output\main_1.o: ..\adjustRollerData\rt_nonfinite.h
+..\output\main_1.o: ..\magnetomometer\rt_nonfinite.h
 ..\output\main_1.o: C:\Program Files\ARM\ARMCC\Bin\..\include\stddef.h
-..\output\main_1.o: ..\adjustRollerData\rtwtypes.h
+..\output\main_1.o: ..\magnetomometer\rtwtypes.h
 ..\output\main_1.o: C:\Program Files\ARM\ARMCC\Bin\..\include\limits.h
-..\output\main_1.o: ..\adjustRollerData\adjustRollerData.h
+..\output\main_1.o: ..\magnetomometer\find_resultant.h
 ..\output\main_1.o: C:\Program Files\ARM\ARMCC\Bin\..\include\stdlib.h
-..\output\main_1.o: C:\Program Files\ARM\ARMCC\Bin\..\include\string.h
-..\output\main_1.o: ..\adjustRollerData\adjustRollerData_types.h
-..\output\main_1.o: ..\adjustRollerData\adjustRollerData_initialize.h
-..\output\main_1.o: ..\adjustRollerData\adjustRollerData_emxutil.h
-..\output\main_1.o: ..\adjustRollerData\rand.h
+..\output\main_1.o: ..\magnetomometer\find_resultant_types.h
+..\output\main_1.o: ..\magnetomometer\find_resultant_initialize.h

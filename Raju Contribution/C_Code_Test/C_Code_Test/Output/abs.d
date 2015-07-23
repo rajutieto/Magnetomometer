@@ -1,0 +1,11 @@
+..\output\abs.o: ..\FFT_CO2\abs.c
+..\output\abs.o: ..\FFT_CO2\rt_nonfinite.h
+..\output\abs.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stddef.h
+..\output\abs.o: ..\FFT_CO2\rtwtypes.h
+..\output\abs.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\limits.h
+..\output\abs.o: ..\FFT_CO2\FFT_CO2.h
+..\output\abs.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\math.h
+..\output\abs.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stdlib.h
+..\output\abs.o: ..\FFT_CO2\FFT_CO2_types.h
+..\output\abs.o: ..\FFT_CO2\abs.h
+..\output\abs.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\string.h

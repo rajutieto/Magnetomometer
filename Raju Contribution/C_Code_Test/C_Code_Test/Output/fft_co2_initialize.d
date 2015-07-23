@@ -1,0 +1,10 @@
+..\output\fft_co2_initialize.o: ..\FFT_CO2\FFT_CO2_initialize.c
+..\output\fft_co2_initialize.o: ..\FFT_CO2\rt_nonfinite.h
+..\output\fft_co2_initialize.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stddef.h
+..\output\fft_co2_initialize.o: ..\FFT_CO2\rtwtypes.h
+..\output\fft_co2_initialize.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\limits.h
+..\output\fft_co2_initialize.o: ..\FFT_CO2\FFT_CO2.h
+..\output\fft_co2_initialize.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\math.h
+..\output\fft_co2_initialize.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stdlib.h
+..\output\fft_co2_initialize.o: ..\FFT_CO2\FFT_CO2_types.h
+..\output\fft_co2_initialize.o: ..\FFT_CO2\FFT_CO2_initialize.h
