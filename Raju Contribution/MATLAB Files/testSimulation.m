@@ -37,4 +37,3 @@ legend('Roller Affected','Roller Noise Filtered')
 title('Roller Effect Filtering');
 
 % testPlot();
-

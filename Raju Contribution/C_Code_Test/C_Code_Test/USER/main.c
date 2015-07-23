@@ -20,7 +20,7 @@
   * @retval : None
   */
 u8 print_buffer[1000]; 
-const real_T x[64] = {  //define the input 
+const int_T x[64] = {  //define the input 
 /*1849,
 1757,
 1845,
